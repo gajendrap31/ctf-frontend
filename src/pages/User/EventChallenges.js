@@ -82,7 +82,6 @@ function EventChallenges() {
             try {
                 const data = JSON.parse(event.data);
 
-                console.log("notify::", data.update);
                 if (data.update) {
                     if (currentEventData?.id) {
                         //fetchSubmissionData()
@@ -116,12 +115,10 @@ function EventChallenges() {
                 }
 
             } catch (error) {
-                console.error("Error parsing notification:", error);
             }
         };
 
         eventSource.onerror = () => {
-            console.error("SSE connection error");
             eventSource.close();
 
         };
@@ -136,10 +133,8 @@ function EventChallenges() {
     const fetchCurrentEventDetails = async () => {
         try {
             const res = await axiosInstance.get(`/user/event/current`);
-            console.log("eve:", res.data)
             setCurrentEventData(res.data);
         } catch (error) {
-            console.error("Failed to fetch event details:", error);
         }
     };
     useEffect(() => {
@@ -151,9 +146,7 @@ function EventChallenges() {
         try {
             const res = await axiosInstance.get(`/user/event/${currentEventData.id}/challengeCategory`);
             setChallengesCategory(res.data);
-            console.log(res.data)
         } catch (error) {
-            console.error("Error fetching challenge categories:", error);
         }
     };
 
@@ -183,7 +176,6 @@ function EventChallenges() {
     const fetchServerTime = async () => {
         try {
             const res = await axiosInstance.get(`user/server/time`)
-            console.log("Server time:", res.data)
             setServerTime(res.data)
         } catch (error) {
 
@@ -233,11 +225,9 @@ function EventChallenges() {
     const handleLeaveEvent = async () => {
         try {
             const res = await axiosInstance.post(`${url}/user/event/${currentEventData.id}/leave`, {});
-            console.log(res.data)
             toast.success(res.data)
             navigate("/Dashboard");
         } catch (error) {
-            console.error("Error leaving event:", error);
             toast.error(error.response?.data)
         }
     };
@@ -266,8 +256,6 @@ function EventChallenges() {
                 { solution: challengeSolution, ...(force && { forceSubmit: true }) },
             );
 
-
-            console.log(res)
             //setChallengeSolution("");
             const categoryId = selectedCategory.id;
             const categoryRef = categoryRefs.current[categoryId];
@@ -288,7 +276,6 @@ function EventChallenges() {
             setChallengeSolution("")
 
         } catch (error) {
-            console.log(error.response);
             if (error.response?.data?.warning) {
                 setOpenWarningSubmitMessage(error.response.data.message);
                 setOpenWarningSubmitModal(true);
@@ -304,10 +291,8 @@ function EventChallenges() {
     const fetchHintFromServer = async () => {
         try {
             const res = await axiosInstance.post(`/user/challenge/${selectedChallenge.id}/hint/view`);
-            console.log("Hint:::", res.data);
             return res.data;
         } catch (error) {
-            console.log(error);
             return "Error fetching hint.";
         }
     };
@@ -388,7 +373,6 @@ function EventChallenges() {
             window.URL.revokeObjectURL(downloadUrl);
 
         } catch (error) {
-            console.error("Error downloading the file:", error);
             toast.error("Failed to download file. Please try again.");
         }
     };
@@ -673,7 +657,6 @@ const CategoryChallenges = forwardRef(({ category, eventData, handleChallengeCli
     const token = localStorage.getItem("Token");
 
     const fetchChallenges = async () => {
-        console.log(category.name)
         try {
             const res = await axios.get(
                 `${url}/user/challengeCategory/${category.id}/challenge/assigned`,
@@ -681,7 +664,6 @@ const CategoryChallenges = forwardRef(({ category, eventData, handleChallengeCli
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
-            console.log(res.data)
             const newChallenges = res.data || [];
 
             // Create unique list
@@ -697,7 +679,6 @@ const CategoryChallenges = forwardRef(({ category, eventData, handleChallengeCli
             return uniqueChallenges; // ✅ important
 
         } catch (error) {
-            console.error(`Error fetching challenges for category ${category.id}:`, error);
             return [];
         }
     };

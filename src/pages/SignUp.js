@@ -148,7 +148,6 @@ const Signup = () => {
                 const response = await axios.get(`${url}/organisation-type`);
                 setOrganizationTypeData(response.data);
             } catch (error) {
-                console.log("Some error occurred:", error);
             }
         };
         fetchOrganizationType();
@@ -158,9 +157,7 @@ const Signup = () => {
         try {
             const response = await axios.get(`${url}/organisation/${organisationType}`);
             setOrganizationNameData(response.data);
-            console.log(response.data)
         } catch (error) {
-            console.log("Some error occurred:", error);
         }
     };
 
@@ -211,7 +208,6 @@ const Signup = () => {
             userType,
             mobile
         };
-        console.log({ payload })
 
         try {
             const response = await axios.post(`${url}/signup`,
@@ -221,7 +217,6 @@ const Signup = () => {
                     withCredentials: true
                 }
             );
-            console.log(JSON.stringify(response?.data));
             setShowSignupSuccessModal(true);
             setName('');
             setUserName('');
@@ -256,7 +251,6 @@ const Signup = () => {
                     withCredentials: true,
                 }
             );
-            console.log(response.data)
             toast.success("OTP resent successfully!");
             navigate("/Verify Email", { state: { email } })
             setEmail('')
@@ -271,10 +265,8 @@ const Signup = () => {
     const fetchOrganizationState = async () => {
         try {
             const res = await axios.get(`${url}/statesAndUT`)
-            console.log(res.data)
             setOrganizationStateData(res.data)
         } catch (error) {
-            console.log(error.response?.data)
         }
     }
     return (

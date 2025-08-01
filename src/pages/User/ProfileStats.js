@@ -46,10 +46,8 @@ export default function ProfileStats() {
     const fetchUserStats = async () => {
         try {
             const res = await axiosInstance.get(`/user/statistics`)
-            console.log("userStats", res.data)
             setUserStats(res.data)
         } catch (error) {
-            console.log(error)
         }
     }
 
@@ -65,14 +63,12 @@ export default function ProfileStats() {
     const handleRefresh = async () => {
         try {
             const res = await axiosInstance.get(`user/statistics/refresh`)
-            console.log(res.data)
             setRefreshMessage(res.data)
             fetchUserStats()
             setTimeout(() => {
                 setRefreshMessage("");
             }, 5000);
         } catch (error) {
-            console.log(error.response?.data)
             setRefreshMessage(error.response?.data)
             setTimeout(() => {
                 setRefreshMessage("");

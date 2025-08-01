@@ -70,10 +70,8 @@ function MyTeams() {
     const fetchCurrentEventDetails = async () => {
         try {
             const res = await axiosInstance.get(`/user/event/current`);
-            console.log("Current Event Details:", res.data)
             setCurrentEventData(res.data);
         } catch (error) {
-            // console.error("Failed to fetch event details:", error);
             //toast.error("Failed to fetch event details");
         }
     };
@@ -81,29 +79,23 @@ function MyTeams() {
     const fetchTeam = async () => {
         try {
             const res = await axiosInstance.get('/user/team')
-            console.log("Your Team Details:", res.data)
             setTeamData(res.data)
         } catch (error) {
-            //console.log(error)
         }
     }
 
     const fetchTeamInvitation = async (id) => {
         try {
             const res = await axiosInstance.get(`/user/team/${id}/captain/invitations`)
-            console.log("Team invitation:", res.data)
             setTeamInvitation(res.data)
         } catch (error) {
-            //console.log(error)
         }
     }
     const fetchTeamRequest = async (id) => {
         try {
             const res = await axiosInstance.get(`/user/team/${id}/captain/requests`)
-            console.log("Team request:", res.data)
             setTeamRequest(res.data)
         } catch (error) {
-            //console.log(error)
         }
     }
 
@@ -131,17 +123,14 @@ function MyTeams() {
 
     const handleTeamSubmit = async (event) => {
         try {
-            console.log(event.id, teamName)
             const response = await axiosInstance.post(`/user/event/${event.id}/team`,
                 { teamName }
             );
-            //console.log(response.data)
             toast.success(response.data || "Team added successfully!");
             setTeamName("")
             fetchCurrentEventDetails();
             fetchTeam();
         } catch (error) {
-            // console.error("Error adding team :", error);
             toast.error(error.response?.data || "Failed to create team");
         }
     }
@@ -160,7 +149,6 @@ function MyTeams() {
     const handleDeleteMember = async (id, memberId) => {
         try {
             const res = await axiosInstance.delete(`/user/team/${id}/member/${memberId}`)
-            // console.log(res.data)
             toast.success(res.data)
             fetchCurrentEventDetails();
             fetchTeam();
@@ -173,7 +161,6 @@ function MyTeams() {
     const handleDeleteInvitation = async (id) => {
         try {
             const res = await axiosInstance.delete(`/user/teamInvitation/${id}/captain/invite`)
-            //console.log(res.data)
             toast.success(res.data)
             fetchCurrentEventDetails();
             fetchTeam();
@@ -185,7 +172,6 @@ function MyTeams() {
     const handleRejectRequest = async (id) => {
         try {
             const res = await axiosInstance.delete(`/user/teamInvitation/${id}/captain/request`)
-            console.log(res.data)
             toast.success(res.data)
             fetchCurrentEventDetails();
             fetchTeam();
@@ -197,7 +183,6 @@ function MyTeams() {
     const handleAcceptRequest = async (id) => {
         try {
             const res = await axiosInstance.post(`/user/teamInvitation/${id}/accept`)
-            console.log(res.data)
             toast.success(res.data)
             fetchCurrentEventDetails();
             fetchTeam();
@@ -208,7 +193,6 @@ function MyTeams() {
     const handleLeaveTeam = async (id) => {
         try {
             const res = await axiosInstance.post(`/user/team/${id}/leave`)
-            console.log(res.data)
             toast.success(res.data)
 
             setTeamData([]);  // Ensures UI updates immediately
@@ -223,9 +207,7 @@ function MyTeams() {
     }
     const handleAssignCaptain = async (teamId, userId) => {
         try {
-            console.log(userId)
             const res = await axiosInstance.post(`/user/team/${teamId}/captain/new`, { userId })
-            console.log(res.data)
             toast.success(res.data)
             fetchCurrentEventDetails();
             fetchTeam();
@@ -252,7 +234,6 @@ function MyTeams() {
     const fetchServerTime = async () => {
         try {
             const res = await axiosInstance.get(`user/server/time`)
-            // console.log("Server time:", res.data)
             setServerTime(res.data)
         } catch (error) {
 
@@ -301,7 +282,6 @@ function MyTeams() {
         }else if (userActivity.message){
             fetchTeam()
         }
-        //console.log("Reloading team data due to userActivity:", userActivity);
     }, [userActivity]);
 
     const [liveUsersNotInTeam, setLiveUsersNotInTeam] = useState([])
@@ -309,10 +289,8 @@ function MyTeams() {
     const fetLiveUsersNotInTeamData = async (eventId) => {
         try {
             const res = await axiosInstance.get(`/user/event/${eventId}/users/live/no-team`)
-            console.log("LiveUsersNotInTeam:", res)
             setLiveUsersNotInTeam(res.data)
         } catch (error) {
-            console.log(error)
         }
 
     }
@@ -326,9 +304,7 @@ function MyTeams() {
 
     const handleInviteUser = async (id) => {
         try {
-            console.log({ teamId: teamData.id })
             const res = await axiosInstance.post(`user/${id}/invite`, { teamId: teamData.id })
-            console.log(res)
             toast.success(res.data)
             await fetchTeamInvitation(teamData.id);
             fetLiveUsersNotInTeamData(currentEventData.id)

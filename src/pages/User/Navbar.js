@@ -64,7 +64,6 @@ function Navbar({ value, setValue, setUserActivity }) {
                     if (!event.data) throw new Error("Received empty event data");
 
                     const data = JSON.parse(event.data);
-                    console.log("notify::", data);
 
                     if (!data) throw new Error("Parsed data is null/undefined");
 
@@ -80,7 +79,6 @@ function Navbar({ value, setValue, setUserActivity }) {
                                 data
                             ];
                         } else if (data.eventType) {
-                            console.log("Handling eventType:", data.eventType);
                             // Handle eventType logic if needed
                         } else {
                             updatedNotifications = [...prev, data];
@@ -95,11 +93,9 @@ function Navbar({ value, setValue, setUserActivity }) {
                     }
 
                 } catch (error) {
-                    console.error("Error parsing notification:", error, "Raw event data:", event.data);
                 }
             };
             eventSource.onerror = () => {
-                console.error("SSE connection error. Reconnecting...");
                 eventSource.close();
                 setTimeout(connectEventSource, 5000); // Reconnect after 5 seconds
             };
@@ -158,7 +154,6 @@ function Navbar({ value, setValue, setUserActivity }) {
 
     const formatNotificationTime = (isoString) => {
         if (!isoString || typeof isoString !== "string") {
-            console.error("Invalid notification time:", isoString);
             return "Invalid Date";
         }
         // Handle undefined/null/non-string values
@@ -185,7 +180,6 @@ function Navbar({ value, setValue, setUserActivity }) {
             // Otherwise, return full date (e.g., "Feb 25, 2025")
             return format(date, "MMM d, yyyy");
         } catch (error) {
-            console.error("Error formatting notification time:", error);
             return "Invalid Date";
         }
     };

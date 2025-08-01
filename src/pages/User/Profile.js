@@ -157,11 +157,8 @@ function UserProfile() {
                     },
                 });
 
-                console.log("Hello");
                 setOrganisationTypeData(response.data);
-                console.log(response.data)
             } catch (error) {
-                console.log("Some error occurred:", error);
             }
         };
         fetchOrganizationType();
@@ -180,9 +177,7 @@ function UserProfile() {
                 }
             );
             setOrganisationData(response.data);
-            console.log("organisation", response.data)
         } catch (error) {
-            console.log("Some error occurred:", error);
         }
     };
     const fetchCourseData = async () => {
@@ -195,21 +190,16 @@ function UserProfile() {
                 },
             });
 
-            console.log("Hello");
             setCourseData(response.data);
-            console.log(response.data)
         } catch (error) {
-            console.log("Some error occurred:", error);
         }
     };
 
     const fetchOrganisationState = async () => {
         try {
             const res = await axios.get(`${url}/statesAndUT`)
-            console.log(res.data)
             setOrganisationStateData(res.data)
         } catch (error) {
-            console.log(error.response?.data)
         }
     }
 
@@ -330,7 +320,6 @@ function UserProfile() {
                                                 value={form.fullName}
                                                 onChange={(e) => {
                                                     const { name, value } = e.target;
-                                                    console.log(name, value)
                                                     setForm((prev) => ({ ...prev, [name]: value }));
                                                 }}
                                                 className="w-full px-2 py-1 text-sm border border-gray-800 rounded"
@@ -398,7 +387,6 @@ function UserProfile() {
                                                 value={form.mobile}
                                                 onChange={(e) => {
                                                     const { name, value } = e.target;
-                                                    console.log(name, value)
                                                     setForm((prev) => ({ ...prev, [name]: value }));
                                                 }}
                                                 onKeyDown={(e) => {
@@ -434,7 +422,6 @@ function UserProfile() {
                                                 value={form.userType}
                                                 onChange={(e) => {
                                                     const { name, value } = e.target;
-                                                    console.log(name, value)
                                                     setForm((prev) => ({
                                                         ...prev,
                                                         [name]: value,
@@ -470,7 +457,6 @@ function UserProfile() {
                                                 value={form.organisationType}
                                                 onChange={(e) => {
                                                     const { name, value } = e.target;
-                                                    console.log(name, value)
                                                     setForm((prev) => ({
                                                         ...prev,
                                                         [name]: value,
@@ -516,7 +502,6 @@ function UserProfile() {
                                                 value={form.organisationId}
                                                 onChange={(e) => {
                                                     const { name, value } = e.target;
-                                                    console.log(name, value);
                                                     setForm((prev) => {
                                                         const updatedForm = {
                                                             ...prev,
@@ -566,7 +551,6 @@ function UserProfile() {
                                                     value={form.organisationName}
                                                     onChange={(e) => {
                                                         const { name, value } = e.target;
-                                                        console.log(name, value)
                                                         setForm((prev) => ({ ...prev, [name]: value }));
                                                     }}
 
@@ -595,7 +579,6 @@ function UserProfile() {
                                                     value={form.organisationPlace}
                                                     onChange={(e) => {
                                                         const { name, value } = e.target;
-                                                        console.log(name, value)
                                                         setForm((prev) => ({ ...prev, [name]: value }));
                                                     }}
 
@@ -621,7 +604,6 @@ function UserProfile() {
                                                     value={form.organisationState}
                                                     onChange={(e) => {
                                                         const { name, value } = e.target;
-                                                        console.log(name, value);
                                                         setForm((prev) => {
                                                             const updatedForm = {
                                                                 ...prev,
@@ -665,7 +647,6 @@ function UserProfile() {
                                                     value={form.levelInfo}
                                                     onChange={(e) => {
                                                         const { name, value } = e.target;
-                                                        console.log(name, value)
                                                         setForm((prev) => ({
                                                             ...prev,
                                                             [name]: value,
@@ -784,7 +765,6 @@ function UserProfile() {
                                                         value={form.levelInfo}
                                                         onChange={(e) => {
                                                             const { name, value } = e.target;
-                                                            console.log(name, value)
                                                             setForm((prev) => ({
                                                                 ...prev,
                                                                 [name]: value,
@@ -860,11 +840,9 @@ const ImageModal = ({ isOpen, onClose, profilePicture, setProfilePicture, fetchP
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
-            console.log("Upload successful:", res.data);
             fetchProfilePicture();
             setIsProfileChanges(true);
         } catch (error) {
-            console.error("Upload failed:", error);
             toast.error("Failed to upload profile picture");
         } finally {
             setUploading(false);
@@ -874,12 +852,10 @@ const ImageModal = ({ isOpen, onClose, profilePicture, setProfilePicture, fetchP
     const handleRemoveImage = async () => {
         try {
             const res = await axiosInstance.delete(`/user/profile/image`);
-            console.log("Image removed:", res.data);
             setProfilePicture(null);
             toast.success("Profile image removed");
             setIsProfileChanges(true);
         } catch (error) {
-            console.error("Failed to remove image:", error);
             toast.error("Failed to remove profile image");
         }
     };
@@ -962,7 +938,6 @@ const IdentityCardModal = ({ axiosInstance, isOpen, onClose }) => {
             const imageUrl = URL.createObjectURL(res.data);
             setIdentityCardUrl(imageUrl);
         } catch (err) {
-            console.error("Error fetching identity card:", err);
         }
     };
 
@@ -982,7 +957,6 @@ const IdentityCardModal = ({ axiosInstance, isOpen, onClose }) => {
             });
             fetchIdentityCard();
         } catch (err) {
-            console.error("Upload failed:", err);
         } finally {
             setUploading(false);
         }
@@ -995,7 +969,6 @@ const IdentityCardModal = ({ axiosInstance, isOpen, onClose }) => {
             await axiosInstance.delete("/user/identification");
             setIdentityCardUrl(null);
         } catch (err) {
-            console.error("Remove failed:", err);
         }
     };
 

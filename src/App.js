@@ -69,7 +69,6 @@ function App() {
       localStorage.removeItem('LogIn');
       localStorage.removeItem('LogOut');
 
-      console.log('Token has expired or is invalid.');
     }
   }, []);
   const handleLogout = () => {

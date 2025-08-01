@@ -62,10 +62,8 @@ function CreateTeam({ userDetails }) {
         try {
             const response = await axiosInstance.get(`/user/event/${event.id}/team`);
             setTeamData(response.data); 
-            console.log(response.data)
            
         } catch (error) {
-            console.error("Error fetching team data:", error);
            // toast.error(error.response?.data || "Failed to fetch team data");
         }
     };
@@ -73,10 +71,8 @@ function CreateTeam({ userDetails }) {
         try {
             const response = await axiosInstance.get(`/user/event/${event.id}/users/live`);
             setEventUserData(response.data);
-            console.log("user", response.data)
            // toast.success("User data fetched successfully!");
         } catch (error) {
-            console.error("Error fetching user data:", error);
            // toast.error(error.response?.data || "Failed to fetch team data");
         }
     };
@@ -100,15 +96,12 @@ function CreateTeam({ userDetails }) {
 
     const handleTeamSubmit = async () => {
         try {
-            console.log(event.id, teamName)
             const response = await axiosInstance.post(`/user/event/${event.id}/team`,
                 { teamName }
             );
-            console.log(response.data)
             toast.success("Team added successfully!");
             setTeamName("")
         } catch (error) {
-            console.error("Error adding team :", error);
             toast.error(error.response?.data || "Failed to fetch team data");
         }
     }

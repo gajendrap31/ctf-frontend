@@ -89,7 +89,6 @@ const SignIn = ({ setIsLoggedIn, setUserDetails }) => {
             const imageUrl = URL.createObjectURL(res.data);
             setCaptchaImg(imageUrl);
         } catch (error) {
-            console.log('Captcha fetch error:', error);
         }
     };
 
@@ -100,11 +99,9 @@ const SignIn = ({ setIsLoggedIn, setUserDetails }) => {
     const handleSignIn = async (e) => {
         e.preventDefault();
         setLoading(true)
-        console.log("Hello")
         const username = userName;
         const date = new Date();
         try {
-            console.log({ username, password: encryptedPassword, clientDateTime: date.toISOString(), captchaToken, captchaText: captchaInput })
             const response = await axios.post(LOGIN_URL,
                 JSON.stringify({ username, password: encryptedPassword, clientDateTime: date.toISOString(), captchaToken, captchaText: captchaInput }),
                 {
@@ -113,11 +110,7 @@ const SignIn = ({ setIsLoggedIn, setUserDetails }) => {
                 }
             );
 
-            console.log("data", response.data);
-
-
             const token = response.data;
-            console.log("tt:", token)
             const decodedToken = jwtDecode(token);
             const userRole = decodedToken.role;
 
@@ -129,15 +122,11 @@ const SignIn = ({ setIsLoggedIn, setUserDetails }) => {
             await fetchProfilePicture();
             setUserDetails(decodedToken);
             setIsLoggedIn(true);
-
-            console.log(decodedToken);
-
             navigate('/Dashboard', { replace: true });
             setUserName('');
             setPassword('');
 
         } catch (err) {
-            console.log(err)
             toast.error(err.response.data || "Login failed!");
             errRef.current?.focus();
             handleCaptcha()
@@ -407,7 +396,6 @@ const Modal = ({ isOpen, onClose, setIsLoggedIn, setUserDetails, fetchUserDetail
             const imageUrl = URL.createObjectURL(res.data);
             setCaptchaImg(imageUrl);
         } catch (error) {
-            console.log('Captcha fetch error:', error);
         }
     };
 
@@ -420,7 +408,6 @@ const Modal = ({ isOpen, onClose, setIsLoggedIn, setUserDetails, fetchUserDetail
     const handleSendOTP = async (e) => {
         e.preventDefault();
         setLoading(true)
-        console.log({ username: email, captchaToken, captchaText: captchaInput });
         try {
             const response = await axios.post(
                 `${url}/login/otp/send`,
@@ -431,7 +418,6 @@ const Modal = ({ isOpen, onClose, setIsLoggedIn, setUserDetails, fetchUserDetail
                 }
             );
 
-            console.log("data", response.data);
             setIsOTPSent(true);
         } catch (error) {
             toast.error(error.response?.data || "Error occurred while sending otp")
@@ -444,7 +430,6 @@ const Modal = ({ isOpen, onClose, setIsLoggedIn, setUserDetails, fetchUserDetail
     const handleSubmitOTP = async (e) => {
         e.preventDefault();
         setLoadingSubmit(true)
-        console.log("OTP:", otp);
         try {
             const date = new Date();
             const response = await axios.post(
@@ -456,10 +441,8 @@ const Modal = ({ isOpen, onClose, setIsLoggedIn, setUserDetails, fetchUserDetail
                 }
             );
             const token = response.data;
-            console.log("tt:", token)
             const decodedToken = jwtDecode(token);
             const userRole = decodedToken.role;
-            console.log(decodedToken)
             localStorage.setItem('LogIn', true);
             localStorage.setItem('LogOut', false);
             localStorage.setItem('Token', token);
@@ -468,8 +451,6 @@ const Modal = ({ isOpen, onClose, setIsLoggedIn, setUserDetails, fetchUserDetail
             await fetchProfilePicture();
             setUserDetails(decodedToken);
             setIsLoggedIn(true);
-            console.log(3)
-            console.log(decodedToken);
 
             navigate('/Dashboard', { replace: true });
         } catch (error) {
@@ -482,7 +463,7 @@ const Modal = ({ isOpen, onClose, setIsLoggedIn, setUserDetails, fetchUserDetail
     const handleResendOTP = async (e) => {
         e.preventDefault();
         setLoadingResendOTP(true)
-        console.log({ username: email });
+
         try {
             const response = await axios.post(
                 `${url}/login/otp/resend`,
@@ -493,7 +474,6 @@ const Modal = ({ isOpen, onClose, setIsLoggedIn, setUserDetails, fetchUserDetail
                 }
             );
 
-            console.log("data", response.data);
             toast.success(response.data)
             setIsOTPSent(true);
         } catch (error) {

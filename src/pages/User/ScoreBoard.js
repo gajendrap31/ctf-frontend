@@ -80,7 +80,6 @@ function Scoreboard() {
     try {
       const response = await axiosInstance.get('/user/event/registered');
       setEvents(response.data);
-      console.log("Registered Event:", response.data)
     } catch (error) {
 
     }
@@ -89,7 +88,6 @@ function Scoreboard() {
   const fetchCurrentEventDetails = async () => {
     try {
       const res = await axiosInstance.get(`/user/event/current`);
-      console.log("Current Event Details:", res.data)
       setCurrentEvent(res.data);
     } catch (error) {
 
@@ -119,7 +117,6 @@ function Scoreboard() {
           searchTerm: searchKey,
         },
       });
-      console.log("Current Event Score:", res.data)
       setScoreData(res.data);
     } catch (error) {
 
@@ -140,10 +137,8 @@ function Scoreboard() {
           searchTerm: searchKey,
         },
       });
-      console.log("Selected Event Score:", res.data)
       setScoreData(res.data);
     } catch (error) {
-      console.error("Error fetching score data:", error);
     } finally {
       setTableLoading(false)
     }
@@ -183,7 +178,6 @@ function Scoreboard() {
   const fetchServerTime = async () => {
     try {
       const res = await axiosInstance.get(`user/server/time`)
-      console.log("Server time:", res.data)
       setServerTime(res.data)
     } catch (error) {
 
@@ -221,7 +215,6 @@ function Scoreboard() {
 
   const getEventById = (id) => {
     const data = events.find((event) => String(event.id) === String(id)) || null;
-    console.log("Selected Event Data:", data)
     setSelectedEventData(data);
   };
 

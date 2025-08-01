@@ -29,10 +29,9 @@ const ForgotPassword = () => {
     const [captchaKey, setCaptchaKey] = useState(0);
     // Handlers
     const handleSendOTP = async (captchaToken, captchaInput) => {
-        console.log(email)
         try {
             setLoading(true)
-            console.log({ emailAddress: email, captchaToken, captchaText: captchaInput })
+            
             const res = await axios.post(
                 `${url}/forgot-password/otp`,
                 { emailAddress: email, captchaToken, captchaText: captchaInput },
@@ -41,12 +40,11 @@ const ForgotPassword = () => {
                     withCredentials: true,
                 }
             );
-            console.log(res.data);
+
             toast.success(res?.data || "OTP sent successfully, Please check your email.")
             setStep(2);
         } catch (error) {
             toast.error(error.response?.data || "Email doesn't exist")
-            console.log(error)
             setCaptchaKey(prev => prev + 1);
         } finally {
             setLoading(false)
@@ -188,7 +186,6 @@ const EmailInput = ({ email, setEmail, onSendOTP, loading, captchaKey }) => {
             const imageUrl = URL.createObjectURL(res.data);
             setCaptchaImg(imageUrl);
         } catch (error) {
-            console.log('Captcha fetch error:', error);
         }
     };
 
@@ -272,8 +269,6 @@ const OTPInput = ({ email, setStep, setToken }) => {
     const handleSubmitOTP = async () => {
         try {
             setLoadingSubmit(true)
-            console.log("Hello")
-            console.log(email, otp)
             const res = await axios.post(
                 `${url}/reset-password/otp/verify`,
                 { emailAddress: email, otp },
@@ -282,22 +277,17 @@ const OTPInput = ({ email, setStep, setToken }) => {
                     withCredentials: true,
                 }
             );
-            console.log(res);
-
             setToken(res.data)
             setStep(3);
         } catch (error) {
             toast.error(error.response?.data || "Error occured while verifing the email!")
-            console.error(error);
         } finally {
             setLoadingSubmit(false)
         }
     };
     const handleResendOTP = async () => {
-        console.log(email)
         try {
             setLoadingResend(true)
-            console.log({ emailAddress: email, })
             const res = await axios.post(
                 `${url}/forgot-password/otp/resend`,
                 { emailAddress: email, },
@@ -306,12 +296,10 @@ const OTPInput = ({ email, setStep, setToken }) => {
                     withCredentials: true,
                 }
             );
-            console.log(res.data);
             toast.success(res?.data || "OTP sent successfully, Please check your email.")
             setStep(2);
         } catch (error) {
             toast.error(error.response?.data || "Email doesn't exist")
-            console.log(error)
         } finally {
             setLoadingResend(false)
         }
@@ -396,7 +384,6 @@ const ResetPassword = ({ email, token, navigate }) => {
 
     const handleResetPassword = async () => {
         try {
-            console.log(email, password, token)
             setLoadingSubmit(true)
             const res = await axios.post(
                 `${url}/reset-password`,
@@ -413,7 +400,6 @@ const ResetPassword = ({ email, token, navigate }) => {
             setForgotPasswordSuccessModalOpen(true)
         } catch (error) {
             toast.error(error.response?.data || "Enter valid password")
-            console.error(error);
         } finally {
             setLoadingSubmit(false)
         }

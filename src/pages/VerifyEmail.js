@@ -26,7 +26,7 @@ function VerifyEmail() {
     const handleResendOTP = async (email) => {
         setLoadingResendOTP(true);
         try {
-            console.log(email)
+
             const response = await axios.post(
                 `${url}/verify/otp/resend`,
                 { emailAddress: email },
@@ -35,7 +35,7 @@ function VerifyEmail() {
                     withCredentials: true,
                 }
             );
-            console.log(response.data)
+
             toast.success(response.data);
         } catch (err) {
             toast.error(err.response?.data || "Error occurred while sending otp")
@@ -48,7 +48,7 @@ function VerifyEmail() {
     const handleSendOTP = async (captchaToken, captchaInput) => {
         setLoadingResendOTP(true);
         try {
-            console.log({ emailAddress: inputEmail, captchaToken, captchaText: { captchaInput } })
+
             const response = await axios.post(
                 `${url}/verify/otp/send`,
                 { emailAddress: inputEmail, captchaToken, captchaText: captchaInput },
@@ -57,10 +57,10 @@ function VerifyEmail() {
                     withCredentials: true,
                 }
             );
-            console.log(response.data)
+
             setIsOTPSent(true)
         } catch (err) {
-            console.log(err)
+
             toast.error(err.response?.data || "Error occurred while sending otp")
             setCaptchaKey(prev => prev + 1);
         } finally {
@@ -79,7 +79,6 @@ function VerifyEmail() {
                     withCredentials: true,
                 }
             );
-            console.log(response.data)
             setShowSuccessModal(true);
         } catch (error) {
             toast.error(error.response.data)
@@ -298,7 +297,6 @@ const EmailInput = ({ email, setEmail, onSendOTP, loading, captchaKey }) => {
             const imageUrl = URL.createObjectURL(res.data);
             setCaptchaImg(imageUrl);
         } catch (error) {
-            console.log('Captcha fetch error:', error);
         }
     };
 

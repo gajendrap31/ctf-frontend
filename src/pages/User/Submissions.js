@@ -70,10 +70,8 @@ function Submissions() {
     const fetchCurrentEventDetails = async () => {
         try {
             const res = await axiosInstance.get(`/user/event/current`);
-            console.log("Current Event Details:", res.data)
             setCurrentEventData(res.data);
         } catch (error) {
-            //console.error("Failed to fetch event details:", error);
             //toast.error("Failed to fetch event details");
         } finally {
             setCurrentEventLoaded(true)
@@ -85,10 +83,8 @@ function Submissions() {
 
             const response = await axiosInstance.get('/user/event/registered');
             setEvents(response.data);
-            console.log(response.data)
         } catch (error) {
             toast.error(`${error.response?.data || "An error occurred while fetching events"}`)
-            console.error(error);
         }
     };
     useEffect(() => {
@@ -117,14 +113,11 @@ function Submissions() {
             if (endDateTime && !isNaN(new Date(endDateTime))) {
                 params.endDateTime = new Date(endDateTime).toISOString();
             }
-            console.log('Request params:', params);
             const res = await axiosInstance.get(`/user/event/${eventId}/submissions`, {
                 params
             });
-            console.log("submissions:", res.data)
             setSubmissionData(res.data);
         } catch (error) {
-            console.error("Error fetching submission data:", error);
         } finally {
             setTableLoading(false)
         }
@@ -204,7 +197,6 @@ function Submissions() {
 
     const getEventById = (id) => {
         const data = events.find((event) => String(event.id) === String(id)) || null;
-        console.log("Selected Event Data:", data)
         setSelectedEventData(data);
     };
 
@@ -218,14 +210,11 @@ function Submissions() {
     const handleMarkForReview = async (submissionId) => {
         setLoadingReview(true)
         const eventId = currentEventData?.id || selectedEvent
-        console.log(eventId)
         try {
             const res = await axiosInstance.post(`/user/event/${eventId}/submission/${submissionId}/mark`);
-            console.log(res.data)
             toast.success(res.data)
             fetchSubmissionData(eventId)
         } catch (error) {
-            console.error("Failed to fetch user details:", error);
             toast.error(error.response?.data || "Failed to fetch user details");
         } finally {
             setLoadingReview(false)

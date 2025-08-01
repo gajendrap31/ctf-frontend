@@ -28,9 +28,7 @@ function UpComingEvents() {
                 },
             });
             setUpComingEvents(response?.data || []);
-            console.log(response.data)
         } catch (error) {
-            console.log(error)
         }
 
     }
@@ -80,7 +78,6 @@ function UpComingEvents() {
     // const handleUpComingEventsNext = () => {
     //     if (currentPageUpComingEvents < totalPagesUpComingEvents) setCurrentPageUpComingEvents((prev) => prev + 1);
     // };
-    console.log(paginatedUpComingEventsData)
     const prevRef = useRef(null);
     const nextRef = useRef(null);
 
@@ -103,19 +100,15 @@ function UpComingEvents() {
     const [eventImages, setEventImages] = useState({});
 
     const getEventImageById = async (eventId) => {
-        console.log(eventId)
         if (eventImages[eventId]) return eventImages[eventId];
         try {
             const response = await axios.get(`${url}/event/${eventId}/image`, {
                 responseType: "blob",
             });
-            console.log("res",response)
             const imageUrl = URL.createObjectURL(response.data);
-            console.log("img",imageUrl)
             setEventImages((prev) => ({ ...prev, [eventId]: imageUrl }));
             return imageUrl;
         } catch (error) {
-            console.log(error)
             return null;
         }
     };
