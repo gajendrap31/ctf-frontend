@@ -92,7 +92,7 @@ const HomePage = () => {
 
   return (
 
-    <div className="flex flex-col items-center min-h-screen space-y-16 md:space-y-16" id="home-section">
+    <div className="flex flex-col items-center space-y-10" id="home-section">
 
       <CTFCarousel />
       {/* Second Section */}

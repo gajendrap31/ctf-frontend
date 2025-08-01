@@ -190,7 +190,7 @@ const ProjectCarousel = () => {
           {projects.map((project, index) => (
             <SwiperSlide key={index}>
               <FadeInWhenVisible delay={index * 0.2}>
-                <div className="mt-16 mb-2 overflow-hidden bg-white rounded-lg shadow-lg">
+                <div className="mt-16 mb-2 overflow-hidden bg-white rounded-lg shadow-md">
                   <div className="relative overflow-hidden group">
                     <img
                       src={project.image}

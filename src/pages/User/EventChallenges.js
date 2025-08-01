@@ -220,11 +220,14 @@ function EventChallenges() {
             .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
     };
 
-    // useEffect(() => {
-    //     if (endTimeLeft <= 0 ) {
-    //         navigate("/Dashboard");
-    //     }
-    // }, [endTimeLeft, navigate]);
+    useEffect(() => {
+		if (endTimeLeft === 0) {
+			const timeout = setTimeout(() => {
+				navigate("/Dashboard");
+			}, 1000); // slight delay for UI update
+			return () => clearTimeout(timeout);
+		}
+	}, [endTimeLeft, navigate]);
 
     // Leave Event
     const handleLeaveEvent = async () => {

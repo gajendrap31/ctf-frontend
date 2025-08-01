@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const url = "http://10.226.43.156:8500";
+export const url = "http://10.226.37.234:8500";
 const token = localStorage.getItem("Token");
 
 export const axiosInstance = axios.create({

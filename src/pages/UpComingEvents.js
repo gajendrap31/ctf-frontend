@@ -131,7 +131,7 @@ function UpComingEvents() {
     return (
         <div>
             <div id="events-section">
-                <div className="px-4 pt-10 min-h-[50vh] sm:px-6 md:px-14 lg:px-24 xl:px-48 2xl:px-72">
+                <div className="px-4 pt-6 min-h-[50vh] sm:px-6 md:px-14 lg:px-24 xl:px-48 2xl:px-72">
                     <h1 className="mb-2 text-xl text-blue-600 sm:text-2xl font-Lexend_Regular">Upcoming Events</h1>
                     <p className="w-full my-2 mb-4 border"></p>
 
