@@ -6,8 +6,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { url } from "../Authentication/Utility";
-import { Tooltip as ReactTooltip } from 'react-tooltip'
-import { FaLongArrowAltLeft } from "react-icons/fa";
+import { FaSignOutAlt, FaInfoCircle, FaPlay, FaUsers, FaArrowLeft, FaTrophy } from "react-icons/fa";
 import AuthService from "../Authentication/AuthService";
 function Instruction() {
   const [openSidebar, setOpenSidebar] = useState(true);
@@ -53,16 +52,20 @@ function Instruction() {
   const fetchEventDetails = async () => {
     try {
       const res = await axiosInstance.get(`/user/event/current`);
+      console.log("eve:", res.data)
       setEventData(res.data);
     } catch (error) {
+      console.error("Failed to fetch event details:", error);
       toast.error(error.response?.data ||"Failed to fetch event details");
     }
   };
   const fetchEventInstruction = async (eventId) => {
     try {
       const res = await axiosInstance.get(`/user/event/${eventId}/instructions`);
+      console.log("eve ins:", res.data)
       setEventInstruction(res.data);
     } catch (error) {
+      console.error("Failed to fetch event details:", error);
       toast.error(error.response?.data ||"Failed to fetch event details");
     }
   };
@@ -95,6 +98,7 @@ function Instruction() {
   const fetchServerTime = async () => {
     try {
       const res = await axiosInstance.get(`user/server/time`)
+      console.log("Server time:", res.data)
       setServerTime(res.data)
     } catch (error) {
 
@@ -136,6 +140,7 @@ function Instruction() {
       navigate("/EventChallenges", { state: { event: eventData } });
       toast.success(response.data);
     } catch (error) {
+      console.error(error);
       toast.error(error.response?.data || "Failed to start the event");
     }
   };
@@ -156,122 +161,108 @@ function Instruction() {
   };
 
   return (
-    <div className=" overflow-hidden">
+    <div className="min-h-screen bg-gray-50 text-gray-800">
       <Sidebar value={openSidebar} setValue={setOpenSidebar} />
 
-      <div className="w-full flex flex-col  overflow-hidden  text-sm">
+      <div className={`transition-all ${openSidebar ? 'xl:ml-72' : ''}`}>
         <Navbar value={openSidebar} setValue={setOpenSidebar} />
         <ToastContainer />
-        <div className={`text-gray-900 overflow-auto     w-full ${openSidebar ? 'pl-0 lg:pl-72' : ''} `} >
-          <div className="flex justify-end px-4 pt-4 ">
+
+        <main className="p-4 md:p-8">
+          <div className="flex justify-end mb-4">
             {eventData && (
               <button
-                className="bg-red-800 px-2 py-1 rounded font-Lexend_SemiBold text-white"
                 onClick={handleExit}
+                className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 text-sm font-semibold rounded transition"
               >
+                <FaSignOutAlt className="inline mr-2" />
                 Leave Event
               </button>
             )}
           </div>
 
-          <div className="bg-white p-10 rounded-lg shadow-md  m-8 ">
+          <div className="bg-white border rounded-lg p-6 shadow-sm">
             {eventData ? (
               <>
-                <h2 className="text-2xl font-semibold mb-4 text-center">
-                  {/* Welcome to */}
-                  <span className="text-blue-600">{eventData.name}</span>
-                </h2>
-               
+                <h1 className="text-3xl font-bold text-center mb-4 text-gray-900">
+                  {eventData.name}
+                </h1>
 
-                <p className="text-xl font-bold text-center text-red-500 mb-3">
-                  {startTimeLeft > 0 ? (
-                    <>
-                      Time Remaining to Start Event<br />
-                      {formatTime(startTimeLeft)}
-                    </>
-                  ) : (
-                    <>
-                      Event has started <br/> Ends In
-                      <p></p> 
-                      {formatTime(endTimeLeft)}
-                    </>
-                  )}
-                </p>
+                <div className="bg-gray-100 rounded-lg p-4 text-center mb-6">
+                  <p className="text-sm font-medium text-gray-700 mb-1">
+                    {startTimeLeft > 0 ? "Event starts in" : "Event is live"}
+                  </p>
+                  <p className="text-xl font-mono font-semibold text-red-600">
+                    {startTimeLeft > 0 ? formatTime(startTimeLeft) : formatTime(endTimeLeft)}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-1">Time remaining</p>
+                </div>
 
+                <div className="mb-6">
+                  <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2 mb-2">
+                    <FaInfoCircle className="text-blue-500" />
+                    Instructions
+                  </h2>
+                  <div className="border-t border-gray-200 mb-3"></div>
 
-
-                {/* <p className="border border-gray-100"></p> */}
-                <h1 className="text-2xl font-bold text-center">Instructions</h1>
-                <p className="border border-gray-100 mb-3"></p>
                 <div
-                  dangerouslySetInnerHTML={{
-                    __html: eventInstruction?.instructions || "<p>No instructions available for this event.</p>",
-                  }}
-                ></div>
-                <p className="border border-gray-100 mb-3"></p>
-                {/* <ul className="list-disc list-inside space-y-4 text-gray-700">
-                  <li>Ensure you have a stable internet connection throughout the exam.</li>
-                  <li>Do not refresh or close the browser during the exam.</li>
-                  <li>Once the exam starts, the timer cannot be paused or reset.</li>
-                  <li>Do not use any unfair means during the exam; your activity will be monitored.</li>
-                  <li>Read each question carefully before submitting your answer.</li>
-                  <li>
-                    The exam will start on:{" "}
-                    <strong className="text-blue-600">{formatDate(eventData.startDateTime)}</strong>
-                  </li>
-                </ul> */}
+                className="prose prose-sm max-w-none text-gray-800"
+                dangerouslySetInnerHTML={{
+                  __html: eventInstruction?.instructions || "<p>No instructions available for this event.</p>",
+                }}
+              />
 
-                <div className="mt-6 text-center space-x-2">
+                </div>
+
+                <div className="flex justify-center gap-4 mt-4 flex-wrap">
                   <button
                     onClick={handleStartEvent}
-                    className={`px-6 py-2 font-bold rounded-lg focus:ring focus:ring-blue-300 ${startTimeLeft > 0
-                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                      : "bg-blue-500 text-white hover:bg-blue-600"
-                      }`}
                     disabled={startTimeLeft > 0}
+                    className={`px-5 py-2 rounded text-sm font-medium transition ${startTimeLeft > 0
+                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                        : 'bg-blue-600 text-white hover:bg-blue-700'
+                      }`}
                   >
-                    Start Event
+                    <FaPlay className="inline mr-2" />
+                    <span className="text-md font-semibold">Start Event</span>
                   </button>
-                  {eventData.teamCreationAllowed &&
 
+                  {eventData.teamCreationAllowed && (
                     <button
-                      className={`px-6 py-2 font-bold rounded-lg focus:ring focus:ring-blue-300 bg-blue-500 text-white hover:bg-blue-600 `}
-                      data-tooltip-id="Teams-button"
-
                       onClick={() => navigate("/Teams")}
+                      className="px-5 py-2 rounded text-sm font-medium bg-green-600 text-white hover:bg-green-700 transition"
                     >
-                      Teams
+                      <FaUsers className="inline mr-2 text-xl" />
+                      <span className="text-md font-semibold">Teams</span>
                     </button>
-                  }
-                  <ReactTooltip
-                    id="Teams-button"
-                    place="top"
-                    content="Create or Join Team"
-                    className="bg-green-500"
-                  />
-
+                  )}
                 </div>
               </>
             ) : (
               <div className="text-center">
-                <div className="mb-4">
-                  <p
-                    className="rounded p-2 text-blue-500 flex items-center justify-center cursor-pointer"
-                    onClick={() => {
-                      navigate("/Dashboard");
-                    }}
-                  >
-                    <FaLongArrowAltLeft className="mr-2" /> Back to Dashboard
-                  </p>
-                </div>
-                <div>
-                  <p className="text-xl font-semibold text-gray-700 mb-2">The event has now concluded.</p>
-                  <p className="text-gray-500"> Thank you for your participation! Stay tuned for upcoming activities and updates.</p>
+                <button
+                  onClick={() => navigate("/Dashboard")}
+                  className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-4 text-sm"
+                >
+                  <FaArrowLeft className="mr-2" />
+                  Back to Dashboard
+                </button>
+
+                <FaTrophy className="text-5xl text-yellow-400 mb-4 mx-auto" />
+                <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                  The event has concluded.
+                </h2>
+                <p className="text-sm text-gray-600 mb-4">
+                  Thank you for participating! Stay tuned for upcoming activities.
+                </p>
+
+                <div className="bg-yellow-50 border border-yellow-200 p-4 rounded">
+                  <p className="text-sm text-yellow-800 font-medium">🎉 Results will be announced soon!</p>
                 </div>
               </div>
             )}
           </div>
-        </div>
+        </main>
       </div>
     </div>
   );

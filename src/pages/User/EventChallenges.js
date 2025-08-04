@@ -69,64 +69,79 @@ function EventChallenges() {
         withCredentials: true,
     });
 
+    const fetchAllChallenges = async () => {
+        if (!currentEventData.id) return;
+
+        try {
+            const res = await axiosInstance.get(`/user/event/${currentEventData.id}/challengeCategory`);
+            const updatedCategories = await Promise.all(
+                res.data.map(async (category) => {
+                    const resChal = await axiosInstance.get(`/user/challengeCategory/${category.id}/challenge/assigned`);
+                    return {
+                        ...category,
+                        challenges: resChal.data || [],
+                    };
+                })
+            );
+            setChallengesCategory(updatedCategories);
+        } catch (err) {
+            //console.error("Failed to reload challenges", err);
+        }
+    };
+
     useEffect(() => {
-        if (!userDetails?.id) return;
-        const userId = userDetails?.id ? Number(userDetails.id) : null;
-        const eventSource = new EventSourcePolyfill(`${url}/submission/update/user/${userId}`, {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
+        if (!userDetails?.id || !token) return;
 
-        eventSource.onmessage = (event) => {
+        let isCancelled = false;
+        let eventSource = null;
+
+        const connectSSE = () => {
             try {
-                const data = JSON.parse(event.data);
+                const userId = Number(userDetails.id);
+                eventSource = new EventSourcePolyfill(`${url}/submission/update/user/${userId}`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                    heartbeatTimeout: 60000,
+                    withCredentials: true,
+                });
 
-                if (data.update) {
-                    if (currentEventData?.id) {
-                        //fetchSubmissionData()
+                eventSource.onopen = () => {
+                    // console.info("✅ SSE connected");
+                };
+
+                eventSource.onmessage = async (event) => {
+                    if (isCancelled) return;
+                    try {
+                        const data = JSON.parse(event.data);
+                        if (data.update && data.challengeCategoryId) {
+                            const ref = categoryRefs.current[data.challengeCategoryId];
+                            if (ref?.refetchChallenges) await ref.refetchChallenges();
+                        }
+                        if (data.message) toast.info(data.message);
+                    } catch (err) {
+                        // console.warn("Invalid SSE message:", err);
                     }
-                }
-                // setNotifications((prev) => {
-                //     let updatedNotifications;
+                };
 
-                //     if (data.clear) {
-                //         // Remove all notifications with the same eventId
-                //         updatedNotifications = prev.filter(notif => notif.eventId !== data.eventId);
-                //     } else if (data.read) {
-                //         // If the new notification is read, remove all previous unread notifications with the same eventId
-                //         updatedNotifications = [
-                //             ...prev.filter(notif => notif.eventId !== data.eventId), // Remove all old notifications with same eventId
-                //             data // Add the latest read notification
-                //         ];
-                //     } else {
-                //         // If unread, add normally
-                //         updatedNotifications = [...prev, data];
-                //     }
-
-                //     // Save updated notifications in localStorage
-                //     localStorage.setItem("notifications", JSON.stringify(updatedNotifications));
-
-                //     return updatedNotifications;
-                // });
-
-                if (data.message) {
-                    toast.info(data.message);
-                }
-
-            } catch (error) {
+                eventSource.onerror = (err) => {
+                    //  console.warn("❌ SSE disconnected. Retrying in 5s...", err);
+                    eventSource?.close();
+                    if (!isCancelled) {
+                        setTimeout(connectSSE, 5000);
+                    }
+                };
+            } catch (err) {
+                //  console.error("❌ SSE connection failed:", err);
             }
         };
 
-        eventSource.onerror = () => {
-            eventSource.close();
-
-        };
+        connectSSE();
 
         return () => {
-            eventSource.close();
+            isCancelled = true;
+            eventSource?.close();
         };
-    }, [userDetails?.id]);
+    }, [userDetails?.id, token]);
+
 
 
     // Fetch Event Details
@@ -153,7 +168,7 @@ function EventChallenges() {
 
     useEffect(() => {
         if (currentEventData?.id) {
-            fetchChallengeCategories();
+            fetchAllChallenges();
         }
     }, [currentEventData]);
 
@@ -175,15 +190,27 @@ function EventChallenges() {
 
     const fetchServerTime = async () => {
         try {
-            const res = await axiosInstance.get(`user/server/time`)
-            setServerTime(res.data)
+            const res = await axiosInstance.get(`user/server/time`, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            });
+            setServerTime(res.data);
         } catch (error) {
-
+           // console.error('Failed to fetch server time:', error);
         }
-    }
+    };
     useEffect(() => {
+        const interval = setInterval(() => {
+            fetchServerTime();
+        }, 10000); // fetch every 10 seconds
+
+        // initial fetch
         fetchServerTime();
+
+        return () => clearInterval(interval);
     }, []);
+
 
     // Timer Countdown
     useEffect(() => {
@@ -213,13 +240,14 @@ function EventChallenges() {
     };
 
     useEffect(() => {
-		if (endTimeLeft === 0) {
-			const timeout = setTimeout(() => {
-				navigate("/Dashboard");
-			}, 1000); // slight delay for UI update
-			return () => clearTimeout(timeout);
-		}
-	}, [endTimeLeft, navigate]);
+        if (endTimeLeft <= 0 && startTimeLeft <= 0) {
+            const timeout = setTimeout(() => {
+                navigate("/Dashboard");
+            }, 1000);
+            return () => clearTimeout(timeout);
+        }
+    }, [endTimeLeft, startTimeLeft, navigate]);
+
 
     // Leave Event
     const handleLeaveEvent = async () => {
@@ -618,23 +646,23 @@ function EventChallenges() {
                                         ? "Oops! Your answer was incorrect. Don't give up — review the challenge and try again!"
                                         : "Oops! You’ve used all your attempts for this challenge."}
                                 </p>
-                                {selectedChallenge?.attempt < currentEventData.maxAttempt?<button
+                                {selectedChallenge?.attempt < currentEventData.maxAttempt ? <button
                                     onClick={() => {
                                         setShowInCorrectSubmissionModal(false)
                                     }}
                                     className={`px-6 py-2 mt-4 text-sm text-white transition rounded bg-red-600 hover:bg-red-700`}
                                 >
                                     Try Again
-                                </button>:
-                                <button
-                                    onClick={() => {
-                                        setShowInCorrectSubmissionModal(false)
-                                        closeModal()
-                                    }}
-                                    className={`px-6 py-2 mt-4 text-sm text-white transition rounded bg-gray-600 hover:bg-gray-700`}
-                                >
-                                    Close
-                                </button>}
+                                </button> :
+                                    <button
+                                        onClick={() => {
+                                            setShowInCorrectSubmissionModal(false)
+                                            closeModal()
+                                        }}
+                                        className={`px-6 py-2 mt-4 text-sm text-white transition rounded bg-gray-600 hover:bg-gray-700`}
+                                    >
+                                        Close
+                                    </button>}
                             </div>
                         </div>
                     )}
