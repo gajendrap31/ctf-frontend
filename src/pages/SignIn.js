@@ -260,6 +260,7 @@ const SignIn = ({ setIsLoggedIn, setUserDetails }) => {
                                         onFocus={() => setPasswordFocus(false)}
                                         onBlur={() => setPasswordFocus(true)}
                                         onPaste={(e) => e.preventDefault()}
+                                        autoComplete="off"
                                         className={`outline-none rounded h-10 w-full font-Lexend_Regular ${passwordFocus ? "border-gray-600" : "border-gray-500"} border px-2`}
                                         placeholder="Enter your password"
                                     />

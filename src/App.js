@@ -15,6 +15,8 @@ import Resources from './pages/Resources';
 
 // Common
 import Dashboard from './pages/Common/Dashboard';
+import { useContext } from 'react';
+import { ProfileContext } from './pages/Context API/ProfileContext';
 
 // User Pages
 import Teams from './pages/User/Teams';
@@ -46,9 +48,15 @@ import AdminProfile from './pages/Admin/AdminPanel/AdminProfile';
 import AdminState_UT from './pages/Admin/AdminPanel/State&UT';
 import Report from './pages/Admin/AdminPanel/Reports';
 function App() {
+  const { setProfilePicture } = useContext(ProfileContext);
   const [userDetails, setUserDetails] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const navigate = useNavigate();
+  const [notifications, setNotifications] = useState(() => {
+    const savedNotifications = localStorage.getItem("notifications");
+    return savedNotifications ? JSON.parse(savedNotifications) : [];
+  });
+
   useEffect(() => {
     const token = AuthService.getToken();
     if (AuthService.isTokenValid(token)) {
@@ -68,19 +76,18 @@ function App() {
       localStorage.removeItem('User_Role');
       localStorage.removeItem('LogIn');
       localStorage.removeItem('LogOut');
-
     }
   }, []);
-  const handleLogout = () => {
-    localStorage.removeItem('Token');
-    localStorage.removeItem('LogIn');
-    localStorage.removeItem('LogOut');
-    localStorage.removeItem('User_Role');
-    //localStorage.clear();
-    //setProfilePicture(null);
-    setUserDetails(null);
-    navigate('/');
+
+  const handleLogout = async () => {
+    await AuthService.logout({
+      setUserDetails,
+      setNotifications,
+      setProfilePicture,
+      navigate,
+    });
   };
+
   useAutoLogout(handleLogout);
   return (
     <Routes>

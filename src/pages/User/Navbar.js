@@ -140,16 +140,36 @@ function Navbar({ value, setValue, setUserActivity }) {
 
 
   // Handle Logout
-  const handleLogout = () => {
-    localStorage.removeItem('Token');
-    localStorage.removeItem('LogIn');
-    localStorage.removeItem('LogOut');
-    localStorage.removeItem('User_Role');
-    //localStorage.clear();
-    setProfilePicture(null);
-    setUserDetails(null);
-    navigate('/');
+  const handleLogout = async () => {
+    try {
+      const userId = userDetails?.id;
+      const token = localStorage.getItem('Token');
+
+      if (userId && token) {
+        await axios.delete(`${url}/user/${userId}/connections`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true
+        });
+      }
+    } catch (error) {
+      console.error("Error disconnecting user connection:", error);
+      // You might want to still log out even if disconnect fails
+    } finally {
+      // Clear notifications here as well
+      setNotifications([]);
+      localStorage.removeItem('notifications');
+      localStorage.removeItem('Token');
+      localStorage.removeItem('LogIn');
+      localStorage.removeItem('LogOut');
+      localStorage.removeItem('User_Role');
+      setProfilePicture(null);
+      setUserDetails(null);
+      navigate('/');
+    }
   };
+
 
   // Token Validation
   useEffect(() => {
