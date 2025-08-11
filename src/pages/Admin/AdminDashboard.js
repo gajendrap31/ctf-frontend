@@ -44,6 +44,7 @@ function AdminDashboard({ userDetails }) {
 
     useEffect(() => {
         const handleResize = () => setOpen(window.innerWidth >= 1280);
+        handleResize();
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
@@ -66,7 +67,7 @@ function AdminDashboard({ userDetails }) {
             const res = await axiosInstance.get(`/admin/users/count`);
             setTotalRegisteredUsers(res.data);
         } catch (error) {
-           
+
         }
     };
 
@@ -74,27 +75,27 @@ function AdminDashboard({ userDetails }) {
         try {
             const response = await axiosInstance.get('/admin/event/list');
             setEvents(response.data);
-           
+
         } catch (error) {
-           
+
         }
     };
     const fetchTodayLiveEvents = async () => {
         try {
             const response = await axiosInstance.get('/admin/events/today/live');
             setTodayLiveEvents(response.data);
-         
+
         } catch (error) {
-           
+
         }
     };
     const fetchTodayNonLiveEvents = async () => {
         try {
             const response = await axiosInstance.get('/admin/events/today/non-live');
             setTodayNonLiveEvents(response.data);
-        
+
         } catch (error) {
-          
+
         }
     };
 
@@ -103,7 +104,7 @@ function AdminDashboard({ userDetails }) {
             // setSelectedEventForParticipants(String(events[0].id));
         }
     }, [events]);
-   
+
     useEffect(() => {
         fetchEvents()
         fetchTodayLiveEvents()
@@ -118,7 +119,7 @@ function AdminDashboard({ userDetails }) {
             <div className="flex flex-col w-full ">
                 <Navbar name={userDetails.name} value={open} setValue={setOpen} />
                 <ToastContainer />
-                <div className={`text-gray-900 overflow-auto min-h-[90vh] w-full ${open ? 'pl-72' : ''} `} >
+                <div className={`text-gray-900 overflow-auto min-h-[90vh] w-full ${open ? 'lg:pl-72' : ''} `} >
                     <div className="grid grid-cols-1 gap-4 p-3 m-4 text-sm rounded md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4 font-Lexend_Regular">
                         <div className="flex flex-col justify-between p-5 border rounded shadow ">
                             <div className="flex flex-col items-center justify-center">
@@ -331,6 +332,28 @@ const EventScoreGraph = () => {
         withCredentials: true,
     }), [token]);
 
+
+    const chartRef = useRef(null);
+
+    useEffect(() => {
+        if (!chartRef.current) return;
+
+        const observer = new ResizeObserver(() => {
+            requestAnimationFrame(() => {
+                if (chartRef.current) {
+                    chartRef.current.resize();
+                }
+            });
+        });
+
+        const chartCanvas = chartRef.current.canvas;
+        if (chartCanvas && chartCanvas.parentNode) {
+            observer.observe(chartCanvas.parentNode);
+        }
+
+        return () => observer.disconnect();
+    }, []);
+
     const loadOptions = async (inputValue, _, { page }) => {
         // Prevent initial duplicate fetch
         if (page === 1 && cachedOptions.current.length > 0 && inputValue === lastSearchTerm.current) {
@@ -385,7 +408,7 @@ const EventScoreGraph = () => {
                 additional: { page: page + 1 },
             };
         } catch (error) {
-          
+
             return { options: [], hasMore: false };
         }
     };
@@ -417,7 +440,7 @@ const EventScoreGraph = () => {
             });
             setScoreData(res.data);
         } catch (error) {
-           
+
         }
     };
     const [isMobile, setIsMobile] = useState(false);
@@ -431,7 +454,7 @@ const EventScoreGraph = () => {
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);
-   
+
     const data = {
         labels: scoreData.content?.map((team) => team.team?.name || team.user?.fullName),
         datasets: [
@@ -455,43 +478,43 @@ const EventScoreGraph = () => {
     };
 
     const options = {
-    responsive: true,
-    plugins: {
-        legend: {
-            display: false,
-            position: "top",
-            labels: {
-                font: {
-                    size: isMobile ? 10 : 12, // Smaller legend font on mobile
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false,
+                position: "top",
+                labels: {
+                    font: {
+                        size: isMobile ? 10 : 12, // Smaller legend font on mobile
+                    },
                 },
             },
         },
-    },
-    scales: {
-        x: {
-            ticks: {
-                color: "#4B5563",
-                font: {
-                    size: isMobile ? 5 : 12, // Smaller x-axis font on mobile
+        scales: {
+            x: {
+                ticks: {
+                    color: "#4B5563",
+                    font: {
+                        size: isMobile ? 5 : 12, // Smaller x-axis font on mobile
+                    },
+                },
+                grid: { display: false },
+            },
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 20,
+                    color: "#4B5563",
+                    font: {
+                        size: isMobile ? 8 : 12, // Smaller y-axis font on mobile
+                    },
+                },
+                grid: {
+                    color: "rgba(200, 200, 200, 0.2)",
                 },
             },
-            grid: { display: false },
         },
-        y: {
-            beginAtZero: true,
-            ticks: {
-                stepSize: 20,
-                color: "#4B5563",
-                font: {
-                    size: isMobile ? 8 : 12, // Smaller y-axis font on mobile
-                },
-            },
-            grid: {
-                color: "rgba(200, 200, 200, 0.2)",
-            },
-        },
-    },
-};
+    };
 
 
     return (
@@ -578,6 +601,7 @@ const EventScoreGraph = () => {
 
                     <div className="w-full max-w-full overflow-x-auto">
                         <Bar
+                            ref={chartRef}
                             data={data}
                             options={options}
                             className="w-full min-w-[300px] min-h-[300px] sm:h-[450px]"
@@ -607,7 +631,7 @@ const TodayEvents = ({ todayLiveEvents, todayNonLiveEvents }) => {
         const options = { hour: "2-digit", minute: "2-digit", hour12: true };
         return new Intl.DateTimeFormat("en-US", options).format(new Date(dateTimeString));
     };
-   
+
     return (
         <div className="flex flex-col col-span-1 p-4 rounded ">
             <div>
@@ -702,10 +726,10 @@ const ReviewSubmissionsCarousel = ({ users, todayLiveEvents }) => {
     const fetchReviewSubmissionData = async (eventId) => {
         try {
             const res = await axiosInstance.get(`/admin/event/${eventId}/submissions/review`);
-           
+
             setReviewSubmissionData(res.data);
         } catch (error) {
-           
+
         }
     };
 

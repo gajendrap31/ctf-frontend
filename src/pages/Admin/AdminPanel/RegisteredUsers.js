@@ -37,6 +37,7 @@ function RegisteredUsers({ userDetails }) {
     const [tableLoading,setTableLoading]=useState(false)
     useEffect(() => {
         const handleResize = () => setOpen(window.innerWidth >= 1280);
+		handleResize();
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);

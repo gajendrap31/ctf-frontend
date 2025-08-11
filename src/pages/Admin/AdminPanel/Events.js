@@ -109,7 +109,7 @@ function AdminEvents({ userDetails }) {
             }
         };
 
-        handleResize(); 
+        handleResize();
         window.addEventListener('resize', handleResize);
         return () => {
             window.removeEventListener('resize', handleResize);
@@ -135,10 +135,10 @@ function AdminEvents({ userDetails }) {
         try {
             const response = await axiosInstance.get(`/organisation-type`);
             setOrganizationTypeData(response.data);
-           
+
         } catch (error) {
             toast.error(`${error.response?.data || "Error fetching organizations"}`);
-           
+
         }
     };
     useEffect(() => {
@@ -162,7 +162,7 @@ function AdminEvents({ userDetails }) {
             if (endDateOverride && !isNaN(new Date(endDateOverride))) {
                 params.endDateTime = new Date(endDateOverride).toISOString();
             }
-           
+
             const response = await axiosInstance.get(`/admin/event`, {
                 params
             });
@@ -178,7 +178,7 @@ function AdminEvents({ userDetails }) {
         fetchEvents()
     }, [currentPage, rowsPerPage, sortBy, sortDirection, searchKey])
 
-        
+
     const handleEventSubmit = async (event) => {
         event.preventDefault();
         const token = localStorage.getItem("Token");
@@ -204,7 +204,7 @@ function AdminEvents({ userDetails }) {
             const response = await axios.post(`${url}/admin/event`, formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    "Content-Type": "multipart/form-data",  
+                    "Content-Type": "multipart/form-data",
                 },
                 withCredentials: true,
             });
@@ -219,9 +219,9 @@ function AdminEvents({ userDetails }) {
 
         } catch (error) {
             toast.error(error.response?.data);
-            
+
         } finally {
-            
+
             setUpdateEventId();
             setUpdateEventName();
             setUpdateEventDescription();
@@ -311,12 +311,12 @@ function AdminEvents({ userDetails }) {
     };
 
     const isPast = (eventDate) => {
-        return new Date(eventDate) < new Date(); 
+        return new Date(eventDate) < new Date();
     };
     const isUpcoming = (eventDate) => {
-        return new Date(eventDate) > new Date(); 
+        return new Date(eventDate) > new Date();
     };
-   
+
 
     const handlePrevious = () => {
         if (currentPage > 1) setCurrentPage((prev) => prev - 1);
@@ -334,14 +334,14 @@ function AdminEvents({ userDetails }) {
             setSortDirection('ASC');
         }
     };
-    const [eventImages, setEventImages] = useState({}); 
+    const [eventImages, setEventImages] = useState({});
 
     const getEventImageById = async (eventId) => {
         if (eventImages[eventId]) return eventImages[eventId];
 
         try {
             const response = await axiosInstance.get(`admin/event/${eventId}/image`, {
-                responseType: "blob", 
+                responseType: "blob",
             });
             const imageUrl = URL.createObjectURL(response.data);
 
@@ -349,7 +349,7 @@ function AdminEvents({ userDetails }) {
 
             return imageUrl;
         } catch (error) {
-            return null; 
+            return null;
         }
     };
 
@@ -643,17 +643,6 @@ function AdminEvents({ userDetails }) {
                                 {/* Left spacer */}
                                 <div className="hidden w-full lg:block lg:w-auto" />
 
-                                {/* Search input on top in small screens */}
-                                <div className="flex flex-col w-full sm:hidden">
-                                    <input
-                                        type="text"
-                                        value={searchKey}
-                                        onChange={(e) => setSearchKey(e.target.value)}
-                                        placeholder="Search..."
-                                        className="w-full p-2 border border-gray-300 rounded"
-                                    />
-                                </div>
-
                                 {/* Date Filter Section */}
                                 <div className="flex flex-col items-center justify-center w-full gap-2 md:flex-row">
                                     <div className="flex flex-col w-full gap-2 sm:flex-row sm:w-auto">
@@ -689,13 +678,13 @@ function AdminEvents({ userDetails }) {
                                 </div>
 
                                 {/* Search & Rows Per Page (shown in row only in sm and up) */}
-                                <div className="items-center justify-center hidden w-full gap-2 sm:flex lg:w-auto">
+                                <div className="flex items-center justify-center w-full gap-2 lg:w-auto">
                                     <input
                                         type="text"
                                         value={searchKey}
                                         onChange={(e) => setSearchKey(e.target.value)}
                                         placeholder="Search..."
-                                        className="w-full p-2 border border-gray-300 rounded sm:w-auto"
+                                        className="w-4/5 p-2 border border-gray-300 rounded sm:w-auto"
                                     />
                                     <select
                                         value={rowsPerPage}
@@ -703,13 +692,17 @@ function AdminEvents({ userDetails }) {
                                             setRowsPerPage(Number(e.target.value));
                                             setCurrentPage(1);
                                         }}
-                                        className="w-full p-2 border border-gray-300 rounded sm:w-auto"
+                                        className="w-1/5 p-2 border border-gray-300 rounded sm:w-auto"
                                     >
-                                        {[10, 20, 50, 100].map((num, index) => (
-                                            <option key={index} value={num}>{num}</option>
+                                        {[10, 20, 50, 100].map((num) => (
+                                            <option key={num} value={num}>
+                                                {num}
+                                            </option>
                                         ))}
                                     </select>
                                 </div>
+
+
                             </div>
 
                             <EventTableData

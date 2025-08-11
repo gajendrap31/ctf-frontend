@@ -60,7 +60,7 @@ function Teams() {
                 setOpenSidebar(false);
             }
         };
-
+        handleResize();
         window.addEventListener('resize', handleResize);
 
         return () => {

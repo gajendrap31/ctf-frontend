@@ -33,9 +33,8 @@ function Instruction() {
       setOpenSidebar(window.innerWidth >= 1280);
     };
 
+	handleResize(); // Initialize on mount
     window.addEventListener("resize", handleResize);
-    handleResize(); // Initialize on mount
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -52,20 +51,16 @@ function Instruction() {
   const fetchEventDetails = async () => {
     try {
       const res = await axiosInstance.get(`/user/event/current`);
-      console.log("eve:", res.data)
       setEventData(res.data);
     } catch (error) {
-      console.error("Failed to fetch event details:", error);
       toast.error(error.response?.data ||"Failed to fetch event details");
     }
   };
   const fetchEventInstruction = async (eventId) => {
     try {
       const res = await axiosInstance.get(`/user/event/${eventId}/instructions`);
-      console.log("eve ins:", res.data)
       setEventInstruction(res.data);
     } catch (error) {
-      console.error("Failed to fetch event details:", error);
       toast.error(error.response?.data ||"Failed to fetch event details");
     }
   };
@@ -98,7 +93,6 @@ function Instruction() {
   const fetchServerTime = async () => {
     try {
       const res = await axiosInstance.get(`user/server/time`)
-      console.log("Server time:", res.data)
       setServerTime(res.data)
     } catch (error) {
 
@@ -140,7 +134,6 @@ function Instruction() {
       navigate("/EventChallenges", { state: { event: eventData } });
       toast.success(response.data);
     } catch (error) {
-      console.error(error);
       toast.error(error.response?.data || "Failed to start the event");
     }
   };

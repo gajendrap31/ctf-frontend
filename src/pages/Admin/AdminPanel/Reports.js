@@ -34,6 +34,7 @@ function Report({ userDetails }) {
     const token = useMemo(() => AuthService.getToken(), []);
     useEffect(() => {
         const handleResize = () => setOpen(window.innerWidth >= 1280);
+		handleResize();
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);

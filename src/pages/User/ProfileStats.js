@@ -23,7 +23,7 @@ export default function ProfileStats() {
         const handleResize = () => {
             setOpenSidebar(window.innerWidth >= 1280);
         };
-
+        handleResize();
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);
     }, []);

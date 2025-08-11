@@ -34,7 +34,7 @@ function ActivateEvents({ userDetails }) {
                 setOpen(false);
             }
         };
-
+		handleResize();
         window.addEventListener('resize', handleResize);
 
         return () => {

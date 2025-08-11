@@ -49,6 +49,7 @@ function UserDashboard() {
             }
         };
 
+        handleResize();
         window.addEventListener('resize', handleResize);
 
         return () => {
@@ -74,9 +75,9 @@ function UserDashboard() {
                 },
             });
             setLiveEvents(response.data);
-            
+
         } catch (error) {
-           
+
         }
     };
     useEffect(() => {
@@ -100,9 +101,9 @@ function UserDashboard() {
                 },
             });
             setUpComingEvents(response.data);
-          
+
         } catch (error) {
-           
+
         }
     };
     useEffect(() => {
@@ -126,9 +127,9 @@ function UserDashboard() {
                 },
             });
             setPastEvents(response.data);
-          
+
         } catch (error) {
-            
+
         }
     };
     useEffect(() => {
@@ -200,19 +201,19 @@ function UserDashboard() {
     };
 
 
-    const [eventImages, setEventImages] = useState({}); 
+    const [eventImages, setEventImages] = useState({});
 
     const getEventImageById = async (eventId) => {
-        if (eventImages[eventId]) return eventImages[eventId]; 
+        if (eventImages[eventId]) return eventImages[eventId];
         try {
             const response = await axiosInstance.get(`user/event/${eventId}/image`, {
                 responseType: "blob",
             });
-            const imageUrl = URL.createObjectURL(response.data); 
-            setEventImages((prev) => ({ ...prev, [eventId]: imageUrl })); 
+            const imageUrl = URL.createObjectURL(response.data);
+            setEventImages((prev) => ({ ...prev, [eventId]: imageUrl }));
             return imageUrl;
         } catch (error) {
-            return null; 
+            return null;
         }
     };
 
@@ -230,18 +231,22 @@ function UserDashboard() {
 
     useEffect(() => {
         if (!userActivity) return;
-        if (userActivity.message?.includes("is now live!")) {
-            fetchLiveEvents()
-            fetchUpComingEvents()
-        } else if (userActivity.message?.includes("now over!")) {
-            fetchLiveEvents()
-            fetchUpComingEvents()
-            fetchPastEvents()
-        } else if (userActivity.message?.includes("has now started!")) {
-            fetchLiveEvents()
+
+        const msg = userActivity.message?.toLowerCase();
+
+        if (msg?.includes("is now live!")) {
+            fetchLiveEvents();
+            fetchUpComingEvents();
+        } else if (msg?.includes("now over!")) {
+            fetchLiveEvents();
+            fetchUpComingEvents();
+            fetchPastEvents();
+        } else if (msg?.includes("has now started!")) {
+            fetchLiveEvents();
         }
 
-    }, [userActivity]);
+    }, [userActivity?.notificationTime]); // ✅ or userActivity?.eventId if it’s always unique
+
 
     const joinedEventId = liveEvents.content?.find(event =>
         event.currentUsers?.includes(userDetails?.id)

@@ -47,7 +47,7 @@ function AdminState_UT({ userDetails }) {
                 setOpen(false);
             }
         };
-
+		handleResize();
         window.addEventListener('resize', handleResize);
 
         return () => {

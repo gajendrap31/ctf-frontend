@@ -46,8 +46,8 @@ function AdminMarkForReview({ userDetails }) {
             } else {
                 setOpen(false);
             }
-        };
-
+        };	
+		handleResize();
         window.addEventListener('resize', handleResize);
 
         return () => {

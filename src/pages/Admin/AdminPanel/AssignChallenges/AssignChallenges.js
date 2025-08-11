@@ -47,6 +47,7 @@ function AssignChallenges({ userDetails }) {
     // Resize listener to auto-toggle sidebar
     useEffect(() => {
         const handleResize = () => setSidebarOpen(window.innerWidth >= 1280);
+		handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);

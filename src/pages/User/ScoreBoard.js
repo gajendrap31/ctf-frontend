@@ -53,7 +53,7 @@ function Scoreboard() {
         setOpen(false);
       }
     };
-
+    handleResize();
     window.addEventListener('resize', handleResize);
 
     return () => {
