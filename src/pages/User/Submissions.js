@@ -43,6 +43,33 @@ function Submissions() {
 
     const [fileterEventStartDate, setFileterEventStartDate] = useState('');
     const [fileterEventEndDate, setFileterEventEndDate] = useState('');
+
+    const [userActivity, setUserActivity] = useState(null)
+
+
+    useEffect(() => {
+            if (!userActivity) return;
+    
+            const msg = userActivity.message?.toLowerCase();
+            if ((msg?.includes("has now started!") || msg?.includes("has been extended")) &&
+            currentEventData?.name &&
+            msg.includes(currentEventData.name.toLowerCase())
+        ) {
+             setTimeout(() => {
+                fetchCurrentEventDetails();
+            }, 3000);
+            fetchServerTime();
+        }
+
+        if (msg?.includes("is now over")) {
+            setStartTimeLeft(0);
+            setEndTimeLeft(0);
+            setTimeout(() => {
+                navigate("/Dashboard");
+            }, 3000);
+        }
+    }, [userActivity]);
+
     useEffect(() => {
         const handleResize = () => {
             setOpenSidebar(window.innerWidth >= 1280);
@@ -161,7 +188,14 @@ function Submissions() {
         }
     }
     useEffect(() => {
+        const interval = setInterval(() => {
+            fetchServerTime();
+        }, 10000); // fetch every 10 seconds
+
+        // initial fetch
         fetchServerTime();
+
+        return () => clearInterval(interval);
     }, []);
 
     // Timer Countdown
@@ -266,7 +300,7 @@ function Submissions() {
             <Sidebar value={openSidebar} setValue={setOpenSidebar} />
 
             <div className="flex flex-col w-full overflow-hidden text-sm ">
-                <Navbar value={openSidebar} setValue={setOpenSidebar} />
+                <Navbar value={openSidebar} setValue={setOpenSidebar} setUserActivity={setUserActivity} />
                 <ToastContainer />
                 <div className={`text-gray-900 overflow-auto min-h-[600px] space-y-8   w-full ${openSidebar ? 'pl-0 lg:pl-72' : ''} `} >
 
@@ -288,13 +322,13 @@ function Submissions() {
                                                 className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
                                                 onClick={() => navigate("/Instruction")}
                                             >
-                                                <FaLongArrowAltLeft /> Back to Event
+                                                <FaLongArrowAltLeft /> Back to Instructions
                                             </button>
                                         )}
                                     </div>
 
                                     <div className="mt-2 text-sm text-red-500 sm:mt-0">
-                                        {startTimeLeft > 0 ? null : formatTime(endTimeLeft)}
+                                        {startTimeLeft > 0 ? formatTime(startTimeLeft) : formatTime(endTimeLeft)}
                                     </div>
                                 </div>
 
@@ -316,7 +350,7 @@ function Submissions() {
                             <div className={`flex flex-col md:flex-row ${Object.keys(currentEventData).length > 0 ? 'justify-end' : 'justify-between'} items-center gap-4 mt-4 font-Lexend_Regular`}>
                                 {/* Event Selection */}
                                 {!Object.keys(currentEventData).length > 0 && <div className="flex flex-col items-center gap-2 sm:flex-row">
-                                   
+
                                     <Select
                                         className="text-gray-600 sm:min-w-96 min-w-72"
                                         classNamePrefix="event-select"
@@ -414,7 +448,7 @@ function Submissions() {
                                     </div>
                                 </div>
                             }
-                           <SubmissionTable
+                            <SubmissionTable
                                 eventData={currentEventData.id ? currentEventData : selectedEventData}
                                 selectedEvent={selectedEvent}
                                 submissionData={submissionData}
@@ -431,7 +465,7 @@ function Submissions() {
                                 loadingReview={loadingReview}
                                 isLoading={tableLoading}
                             />
-                            {(selectedEvent || currentEventData?.id)&& submissionData.totalPages > 0 && (
+                            {(selectedEvent || currentEventData?.id) && submissionData.totalPages > 0 && (
                                 <Pagination
                                     totalItems={submissionData.totalElements}
                                     totalPages={submissionData.totalPages}

@@ -15,6 +15,7 @@ import { faCircleCheck, faCircleXmark, faInfoCircle } from "@fortawesome/free-so
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tooltip } from 'react-tooltip'
 import { PulseLoader } from "react-spinners";
+import { FaLongArrowAltLeft } from "react-icons/fa";
 function EventChallenges() {
     Modal.setAppElement("#root");
     const [openSidebar, setOpenSidebar] = useState(true);
@@ -39,10 +40,32 @@ function EventChallenges() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentChallengeIndex, setCurrentChallengeIndex] = useState(0);
     const [challengeSolution, setChallengeSolution] = useState("");
-
+    const [userActivity, setUserActivity] = useState(null);
     const navigate = useNavigate();
 
     const token = useMemo(() => localStorage.getItem("Token"), []);
+
+    useEffect(() => {
+        if (!userActivity) return;
+
+        const msg = userActivity.message?.toLowerCase();
+        // Event extended
+        if (
+            msg?.includes("has been extended") && currentEventData?.name && msg.includes(currentEventData.name.toLowerCase())
+        ) {
+            fetchServerTime();
+            fetchCurrentEventDetails(); // refresh with new endDateTime
+        }
+
+        // Event over
+        if (
+            msg?.includes("is now over") && currentEventData?.name && msg.includes(currentEventData.name.toLowerCase())
+        ) {
+            //console.log(currentEventData);
+            setEndTimeLeft(5);
+        }
+    }, [userActivity?.notificationTime]);
+
     useEffect(() => {
         const handleResize = () => {
             setOpenSidebar(window.innerWidth >= 1280);
@@ -105,32 +128,33 @@ function EventChallenges() {
                 });
 
                 eventSource.onopen = () => {
-                    // console.info("✅ SSE connected");
+                    //console.info("SSE connected", new Date().toISOString());
                 };
 
                 eventSource.onmessage = async (event) => {
                     if (isCancelled) return;
                     try {
                         const data = JSON.parse(event.data);
+                        if (data.heartbeat) return;
                         if (data.update && data.challengeCategoryId) {
                             const ref = categoryRefs.current[data.challengeCategoryId];
                             if (ref?.refetchChallenges) await ref.refetchChallenges();
                         }
                         if (data.message) toast.info(data.message);
                     } catch (err) {
-                        // console.warn("Invalid SSE message:", err);
+                        // console.warn("Invalid SSE message");
                     }
                 };
 
                 eventSource.onerror = (err) => {
-                    //  console.warn("❌ SSE disconnected. Retrying in 5s...", err);
+                    // console.warn("SSE disconnected. Retrying in 5s...", new Date().toISOString());
                     eventSource?.close();
                     if (!isCancelled) {
                         setTimeout(connectSSE, 5000);
                     }
                 };
             } catch (err) {
-                //  console.error("❌ SSE connection failed:", err);
+                // console.error("SSE connection failed:");
             }
         };
 
@@ -197,7 +221,7 @@ function EventChallenges() {
             });
             setServerTime(res.data);
         } catch (error) {
-           // console.error('Failed to fetch server time:', error);
+            // console.error('Failed to fetch server time:', error);
         }
     };
     useEffect(() => {
@@ -411,7 +435,11 @@ function EventChallenges() {
             <Sidebar value={openSidebar} setValue={setOpenSidebar} />
 
             <div className="flex flex-col w-full overflow-hidden ">
-                <Navbar value={openSidebar} setValue={setOpenSidebar} />
+                <Navbar
+                    value={openSidebar}
+                    setValue={setOpenSidebar}
+                    setUserActivity={setUserActivity}
+                />
                 <ToastContainer />
                 <div className={`text-gray-900 overflow-auto     w-full ${openSidebar ? 'pl-0 lg:pl-72' : ''} `}  >
                     <div className="flex items-center justify-between p-6">
@@ -431,6 +459,12 @@ function EventChallenges() {
                         >
                             Leave
                         </button>
+
+                    </div>
+                    <div>
+                        <button className="flex items-center text-blue-600 hover:text-blue-800 ms-4" onClick={() => navigate("/Instruction")}>
+                            <FaLongArrowAltLeft className="me-1"/> Read Instructions
+                        </button>
                     </div>
                     {challengesCategory.map((category) => (
                         <CategoryChallenges
@@ -443,7 +477,6 @@ function EventChallenges() {
                             handleChallengeClick={handleChallengeClick}
                         />
                     ))}
-
                     {/* Modal for Challenge Details */}
                     <Modal
                         isOpen={isModalOpen}
@@ -670,7 +703,7 @@ function EventChallenges() {
 
                 </div>
             </div>
-        </div>
+        </div >
     );
 
 }

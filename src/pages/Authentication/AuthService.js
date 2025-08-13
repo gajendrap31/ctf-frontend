@@ -43,12 +43,21 @@ const AuthService = {
       }
 
       if (userId && token && role === "ROLE_USER") {
+        
+        // Disconnect SSE or other active connections
         await axios.delete(`${url}/user/${userId}/connections`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
           withCredentials: true,
         });
+
+        // Clear the team submission updates for this user
+        await axios.delete(`${url}/user/${userId}/update`, {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true
+        });
+
       }
     } catch (error) {
       

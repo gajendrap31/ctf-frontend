@@ -72,6 +72,7 @@ function MyTeams() {
             const res = await axiosInstance.get(`/user/event/current`);
             setCurrentEventData(res.data);
         } catch (error) {
+            return null;
             //toast.error("Failed to fetch event details");
         }
     };
@@ -240,7 +241,14 @@ function MyTeams() {
         }
     }
     useEffect(() => {
+        const interval = setInterval(() => {
+            fetchServerTime();
+        }, 10000); // fetch every 10 seconds
+
+        // initial fetch
         fetchServerTime();
+
+        return () => clearInterval(interval);
     }, []);
     // Timer Countdown
     useEffect(() => {
@@ -271,16 +279,37 @@ function MyTeams() {
 
     useEffect(() => {
         if (!userActivity) return;
-        if (userActivity.message?.includes("accepted your invitation to join the team.")) {
+
+        const msg = userActivity.message?.toLowerCase();
+
+        if (msg?.includes("accepted your invitation to join the team.")) {
             fetchTeamInvitation(teamData?.id);
             fetchTeam()
-        } else if (userActivity.message?.includes(" has requested to join your team") || userActivity.message?.includes("has deleted the team join request.")) {
+        } else if (msg?.includes(" has requested to join your team") || msg?.includes("has deleted the team join request.")) {
             fetchTeamRequest(teamData?.id);
             fetchTeam(teamData?.id)
-        } else if (userActivity.message?.includes("You have been removed from the team")) {
+        } else if (msg?.includes("You have been removed from the team")) {
             fetchTeam(teamData?.id)
-        }else if (userActivity.message){
+        } else if (msg) {
             fetchTeam()
+        }
+
+        if ((msg?.includes("has now started!") || msg?.includes("has been extended")) &&
+            currentEventData?.name &&
+            msg.includes(currentEventData.name.toLowerCase())
+        ) {
+             setTimeout(() => {
+                fetchCurrentEventDetails();
+            }, 3000);
+            fetchServerTime();
+        }
+
+        if (msg?.includes("is now over")) {
+            setStartTimeLeft(0);
+            setEndTimeLeft(0);
+            setTimeout(() => {
+                navigate("/Dashboard");
+            }, 3000);
         }
     }, [userActivity]);
 
@@ -324,7 +353,7 @@ function MyTeams() {
                     {Object.keys(currentEventData).length > 0 ? (
                         <div className="p-4">
                             {currentEventData?.name && (
-                                <div className="mx-4 bg-white rounded-md font-Lexend_Regular">
+                                <div className="bg-white rounded-md font-Lexend_Regular">
                                     {/* Top Row: Back Button + Timer */}
                                     <div className="flex flex-col items-center justify-between sm:flex-row ">
                                         <div>
@@ -340,13 +369,13 @@ function MyTeams() {
                                                     className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
                                                     onClick={() => navigate("/Instruction")}
                                                 >
-                                                    <FaLongArrowAltLeft /> Back to Event
+                                                    <FaLongArrowAltLeft /> Back to Instructions
                                                 </button>
                                             )}
                                         </div>
 
                                         <div className="mt-2 text-sm text-red-500 sm:mt-0">
-                                            {startTimeLeft > 0 ? null : formatTime(endTimeLeft)}
+                                            {startTimeLeft > 0 ? formatTime(startTimeLeft) : formatTime(endTimeLeft)}
                                         </div>
                                     </div>
 
@@ -360,7 +389,7 @@ function MyTeams() {
                                     </div>
                                 </div>
                             )}
-                            <div className="flex items-center justify-center p-3 py-2 m-4 bg-gray-100 rounded">
+                            <div className="flex items-center justify-center p-3 py-2 my-4 bg-gray-100 rounded">
                                 <p className="px-8 py-1 text-2xl text-gray-800 rounded font-Lexend_Bold"> My Team </p>
                             </div>
                             {currentEventData.teamCreationAllowed ?
@@ -380,7 +409,7 @@ function MyTeams() {
                                         <button className="p-1 text-white rounded bg-slate-700 w-28 h-9" type="submit" onClick={() => { handleTeamSubmit(currentEventData) }}>Create</button>
                                     </div>
                                 ) : (
-                                    <div className='p-3 m-4 border rounded-lg font-Lexend_Medium '>
+                                    <div className='p-3 border rounded-lg font-Lexend_Medium '>
                                         <div className="flex flex-col items-center justify-between sm:flex-row">
                                             <p className="text-xl font-Lexend_SemiBold" title="Team Name">{teamData.name}</p>
                                             {isCurrentUserCaptain ? (
@@ -463,9 +492,9 @@ function MyTeams() {
                             }
                         </div>
                     ) : (<div>
-                          <div className="flex items-center justify-center p-3 py-2 m-4 bg-gray-100 rounded">
-                                <p className="px-8 py-1 text-2xl text-gray-800 rounded font-Lexend_Bold"> My Team </p>
-                            </div>
+                        <div className="flex items-center justify-center p-3 py-2 m-4 bg-gray-100 rounded">
+                            <p className="px-8 py-1 text-2xl text-gray-800 rounded font-Lexend_Bold"> My Team </p>
+                        </div>
                         <div className="p-6 m-4 text-center border rounded-lg font-Lexend_Regular">
                             <div className="mb-4">
                                 <p
@@ -482,7 +511,7 @@ function MyTeams() {
                                 <p className="text-gray-500">To participate in events, please join an active event first. Once you've joined, you'll be able to view and interact with team data.</p>
                             </div>
                         </div>
-                        </div>
+                    </div>
                     )}
 
                 </div>

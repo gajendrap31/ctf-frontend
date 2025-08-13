@@ -45,6 +45,33 @@ function Scoreboard() {
   const [sortDirection, setSortDirection] = useState('ASC');
 
   const [tableLoading, setTableLoading] = useState(false)
+
+  const [userActivity, setUserActivity] = useState(null)
+
+  useEffect(() => {
+              if (!userActivity) return;
+      
+              const msg = userActivity.message?.toLowerCase();
+              if ((msg?.includes("has now started!") || msg?.includes("has been extended")) &&
+              currentEventData?.name &&
+              msg.includes(currentEventData.name.toLowerCase())
+          ) {
+               setTimeout(() => {
+                  fetchCurrentEventDetails();
+              }, 3000);
+              fetchServerTime();
+          }
+  
+          if (msg?.includes("is now over")) {
+              setStartTimeLeft(0);
+              setEndTimeLeft(0);
+              setTimeout(() => {
+                  navigate("/Dashboard");
+              }, 3000);
+          }
+      }, [userActivity]);
+  
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1280) {
@@ -184,7 +211,14 @@ function Scoreboard() {
     }
   }
   useEffect(() => {
+    const interval = setInterval(() => {
+      fetchServerTime();
+    }, 10000); // fetch every 10 seconds
+
+    // initial fetch
     fetchServerTime();
+
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -222,7 +256,7 @@ function Scoreboard() {
     if (selectedEvent && events.length > 0) {
       getEventById(selectedEvent)
     }
-   
+
   }, [selectedEvent, events]);
 
   const handleSort = (columnIndex) => {
@@ -246,7 +280,7 @@ function Scoreboard() {
       <Sidebar open={open} value={open} setValue={setOpen} />
 
       <div className="flex flex-col w-full overflow-hidden text-sm ">
-        <Navbar value={open} setValue={setOpen} />
+        <Navbar value={open} setValue={setOpen} setUserActivity={setUserActivity} />
         <ToastContainer />
         <div className={`text-gray-900 min-h-[600px] overflow-auto  w-full ${open ? 'pl-0 lg:pl-72' : ''} `} >
           {currentEventData?.name && (
@@ -265,13 +299,13 @@ function Scoreboard() {
                       className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
                       onClick={() => navigate("/Instruction")}
                     >
-                      <FaLongArrowAltLeft /> Back to Event
+                      <FaLongArrowAltLeft /> Back to Instructions
                     </button>
                   )}
                 </div>
 
                 <div className="mt-2 text-sm text-red-500 sm:mt-0">
-                  {startTimeLeft > 0 ? null : formatTime(endTimeLeft)}
+                  {startTimeLeft > 0 ? formatTime(startTimeLeft) : formatTime(endTimeLeft)}
                 </div>
               </div>
 
@@ -293,7 +327,7 @@ function Scoreboard() {
             <div className={`flex flex-col md:flex-row ${currentEventData.id ? "justify-end" : "justify-between"} items-center gap-4 mt-4 font-Lexend_Regular mb-2`}>
               {/* Event Selection */}
               {!currentEventData?.id && <div className="flex flex-col items-center gap-2 sm:flex-row">
-               
+
                 <Select
                   className="text-gray-600 sm:min-w-96 min-w-72"
                   classNamePrefix="event-select"

@@ -230,6 +230,7 @@ function UserDashboard() {
     }, [liveEvents, upComingEvents, pastEvents]);
 
     useEffect(() => {
+        //console.log(userActivity?.message)
         if (!userActivity) return;
 
         const msg = userActivity.message?.toLowerCase();
@@ -241,7 +242,7 @@ function UserDashboard() {
             fetchLiveEvents();
             fetchUpComingEvents();
             fetchPastEvents();
-        } else if (msg?.includes("has now started!")) {
+        } else if (msg?.includes("has now started!") || msg?.includes("has been extended")) {
             fetchLiveEvents();
         }
 

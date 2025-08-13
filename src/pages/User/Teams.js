@@ -80,12 +80,13 @@ function Teams() {
             const res = await axiosInstance.get(`/user/event/current`);
             if (res.data?.id) {
                 setCurrentEventData(res.data);
+            } else {
+                setTeamData([]);
             }
-            setTeamData([]);
         } catch (error) {
-
+            return null;
         } finally {
-            setCurrentEventLoaded(true)
+            setCurrentEventLoaded(true);
         }
     };
 
@@ -275,7 +276,14 @@ function Teams() {
         }
     }
     useEffect(() => {
+        const interval = setInterval(() => {
+            fetchServerTime();
+        }, 10000); // fetch every 10 seconds
+
+        // initial fetch
         fetchServerTime();
+
+        return () => clearInterval(interval);
     }, []);
 
     useEffect(() => {
@@ -348,31 +356,49 @@ function Teams() {
 
     useEffect(() => {
         if (!userActivity) return;
-        if (userActivity.message?.includes("has requested to join your team.")) {
+        const msg = userActivity.message?.toLowerCase();
+        if (msg?.includes("has requested to join your team.")) {
             fetchTeamData();
         }
-        if (userActivity.message?.includes("You are invited to join the team") || userActivity.message?.includes(" has been deleted by the Captain.")) {
+        if (msg?.includes("You are invited to join the team") || msg?.includes(" has been deleted by the Captain.")) {
             fetchTeamInvitationData();
         }
-        if (userActivity.message?.includes("You have been removed from the team")) {
+        if (msg?.includes("You have been removed from the team")) {
             if (currentEventData?.id) {
                 fetchTeamData(currentEventData.id)
             }
         }
 
-        if (userActivity.message?.includes("Your request to join the team") && userActivity.message?.includes("has been rejected by the captain.")) {
+        if (msg?.includes("Your request to join the team") && msg?.includes("has been rejected by the captain.")) {
             if (currentEventData?.id) {
                 fetchTeamData(currentEventData.id)
             }
             fetchTeamRequestData()
         }
 
-        if (userActivity.message?.includes("Your request to join the team") && userActivity.message?.includes("has been accepted by the captain.")) {
+        if (msg?.includes("Your request to join the team") && msg?.includes("has been accepted by the captain.")) {
             if (currentEventData?.id) {
                 fetchTeamData(currentEventData.id)
             }
             fetchTeamRequestData()
         }
+
+        if ((msg?.includes("has now started!") || msg?.includes("has been extended")) && currentEventData?.name && msg.includes(currentEventData.name.toLowerCase())
+        ) {
+             setTimeout(() => {
+                fetchCurrentEventDetails();
+            }, 3000);
+            fetchServerTime();
+        }
+
+        if (msg?.includes("is now over")) {
+            setStartTimeLeft(0)
+            setEndTimeLeft(0)
+            setTimeout(() => {
+                navigate("/Dashboard");
+            }, 3000);
+        }
+
     }, [userActivity]);
 
     const eventSelectOptions = registeredEvents.map(event => ({
@@ -389,9 +415,9 @@ function Teams() {
                 <Navbar value={openSidebar} setValue={setOpenSidebar} setUserActivity={setUserActivity} />
                 <ToastContainer />
                 <div className={`text-gray-900  min-h-[600px] overflow-auto  space-y-8   w-full ${openSidebar ? 'pl-0 lg:pl-72' : ''} `} >
-                    <div className="space-y-4 p-">
+                    <div className="space-y-4 p-4">
                         {currentEventData?.name && (
-                            <div className="px-4 bg-white rounded-md font-Lexend_Regular">
+                            <div className="bg-white rounded-md font-Lexend_Regular">
                                 {/* Top Row: Back Button + Timer */}
                                 <div className="flex flex-col items-center justify-between sm:flex-row ">
                                     <div>
@@ -407,13 +433,13 @@ function Teams() {
                                                 className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
                                                 onClick={() => navigate("/Instruction")}
                                             >
-                                                <FaLongArrowAltLeft /> Back to Event
+                                                <FaLongArrowAltLeft /> Back to Instructions
                                             </button>
                                         )}
                                     </div>
 
                                     <div className="mt-2 text-sm text-red-500 sm:mt-0">
-                                        {startTimeLeft > 0 ? null : formatTime(endTimeLeft)}
+                                        {startTimeLeft > 0 ? formatTime(startTimeLeft) : formatTime(endTimeLeft)}
                                     </div>
                                 </div>
 
@@ -428,10 +454,10 @@ function Teams() {
                             </div>
                         )}
 
-                        <div className="flex items-center justify-center p-3 py-2 m-4 bg-gray-100 rounded">
+                        <div className="flex items-center justify-center p-3 py-2 bg-gray-100 rounded">
                             <p className="px-8 py-1 text-2xl text-gray-800 rounded font-Lexend_Bold"> Teams </p>
                         </div>
-                        <div className="p-3 m-4 border rounded-lg font-Lexend_Regular">
+                        <div className="p-3 border rounded-lg font-Lexend_Regular">
 
                             {currentEventData?.teamCreationAllowed &&
                                 !myTeamStatus && <button

@@ -534,9 +534,9 @@ const MobileTeamCards = ({
 
                             {/* Inline status/action */}
                             <p className="mt-2 italic">{renderActionText(team)}</p>
-                            {currentEventData?.id && <td className="ps-3">
+                            {currentEventData?.id && <div className="">
                                 {renderAction(team)}
-                            </td>}
+                            </div>}
                         </div>
                     ))
                 }

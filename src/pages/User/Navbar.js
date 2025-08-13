@@ -64,7 +64,13 @@ function Navbar({ value, setValue, setUserActivity }) {
 
       es.onmessage = (event) => {
         if (!event.data) return;
-        const data = JSON.parse(event.data);
+        let data;
+        try {
+          data = JSON.parse(event.data);
+        } catch (e) {
+          // console.error("Invalid JSON in SSE data:", event.data, e);
+          return; // exit handler gracefully
+        }
 
         lastMessageTime = Date.now();
 
@@ -80,6 +86,7 @@ function Navbar({ value, setValue, setUserActivity }) {
 
         // Clear notifications for a specific eventId
         if (data.clear && data.eventId) {
+
           setNotifications(prev => {
             const filtered = prev.filter(notif => notif.eventId !== data.eventId);
             localStorage.setItem("notifications", JSON.stringify(filtered));
@@ -110,7 +117,7 @@ function Navbar({ value, setValue, setUserActivity }) {
 
 
       es.onerror = (error) => {
-        console.warn("SSE connection error:", error);
+        //console.warn("SSE connection error");
         es.close();
         setTimeout(connectEventSource, 3000);
       };
@@ -118,7 +125,7 @@ function Navbar({ value, setValue, setUserActivity }) {
       // Heartbeat watchdog: check every 30s if last message > 60s ago
       heartbeatTimer = setInterval(() => {
         if (Date.now() - lastMessageTime > 60000) {
-          console.warn("No SSE messages for 60s, reconnecting...");
+          //console.warn("No SSE messages for 60s, reconnecting...");
           es.close();
           clearInterval(heartbeatTimer);
           connectEventSource();
@@ -146,15 +153,21 @@ function Navbar({ value, setValue, setUserActivity }) {
       const token = localStorage.getItem('Token');
 
       if (userId && token) {
+        // Disconnect SSE or other active connections
         await axios.delete(`${url}/user/${userId}/connections`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
           withCredentials: true
         });
+        // Clear the team submission updates for this user
+        await axios.delete(`${url}/user/${userId}/update`, {
+          headers: { Authorization: `Bearer ${token}` },
+          withCredentials: true
+        });
       }
     } catch (error) {
-      console.error("Error disconnecting user connection:", error);
+      //console.error("Error disconnecting user connection:", error);
       // You might want to still log out even if disconnect fails
     } finally {
       // Clear notifications here as well
@@ -310,7 +323,6 @@ function Navbar({ value, setValue, setUserActivity }) {
                   {notifications.length > 0 ? (
                     notifications
                       .map((notif) => {
-                        console.log(notif);
                         const timeStr = typeof notif.notificationTime === 'string' ? notif.notificationTime.split("[")[0] : null;
                         return {
                           ...notif,

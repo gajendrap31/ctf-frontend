@@ -8,15 +8,19 @@ import axios from "axios";
 import { url } from "../Authentication/Utility";
 import { FaSignOutAlt, FaInfoCircle, FaPlay, FaUsers, FaArrowLeft, FaTrophy } from "react-icons/fa";
 import AuthService from "../Authentication/AuthService";
+
 function Instruction() {
   const [openSidebar, setOpenSidebar] = useState(true);
-  const [serverTime,setServerTime]=useState()
+  const [serverTime, setServerTime] = useState()
   const [startTimeLeft, setStartTimeLeft] = useState(0);
   const [endTimeLeft, setEndTimeLeft] = useState(0);
   const [eventData, setEventData] = useState(null);
   const [eventInstruction, setEventInstruction] = useState()
   const navigate = useNavigate();
   const token = useMemo(() => localStorage.getItem("Token"), []);
+
+  const [userActivity, setUserActivity] = useState(null);
+
 
   const axiosInstance = axios.create({
     baseURL: url,
@@ -27,13 +31,33 @@ function Instruction() {
     withCredentials: true,
   });
 
+  useEffect(() => {
+    if (!userActivity) return;
+
+    const msg = userActivity.message?.toLowerCase();
+    if ((msg?.includes("has now started!") || msg?.includes("has been extended") ) && eventData?.name && msg.includes(eventData.name.toLowerCase())
+    ) {
+      fetchServerTime();
+      fetchEventDetails();
+    }
+
+    if (
+      msg?.includes("is now over") &&
+      eventData?.name &&
+      msg.includes(eventData.name.toLowerCase())
+    ) {
+      navigate("/Dashboard");
+    }
+  }, [userActivity?.notificationTime]);
+
+
   // Handle Sidebar Toggle on Resize
   useEffect(() => {
     const handleResize = () => {
       setOpenSidebar(window.innerWidth >= 1280);
     };
 
-	handleResize(); // Initialize on mount
+    handleResize(); // Initialize on mount
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
@@ -53,7 +77,7 @@ function Instruction() {
       const res = await axiosInstance.get(`/user/event/current`);
       setEventData(res.data);
     } catch (error) {
-      toast.error(error.response?.data ||"Failed to fetch event details");
+      toast.error(error.response?.data || "Failed to fetch event details");
     }
   };
   const fetchEventInstruction = async (eventId) => {
@@ -61,7 +85,7 @@ function Instruction() {
       const res = await axiosInstance.get(`/user/event/${eventId}/instructions`);
       setEventInstruction(res.data);
     } catch (error) {
-      toast.error(error.response?.data ||"Failed to fetch event details");
+      toast.error(error.response?.data || "Failed to fetch event details");
     }
   };
 
@@ -88,7 +112,7 @@ function Instruction() {
       const timeRemaining = Math.max(0, Math.floor((eventEndTime - serverTimestamp) / 1000));
       setEndTimeLeft(timeRemaining);
     }
-  }, [eventData,serverTime]);
+  }, [eventData, serverTime]);
 
   const fetchServerTime = async () => {
     try {
@@ -99,7 +123,9 @@ function Instruction() {
     }
   }
   useEffect(() => {
-    fetchServerTime();
+    fetchServerTime(); // Initial fetch
+    const interval = setInterval(fetchServerTime, 2 * 60 * 1000); // every 2 minutes
+    return () => clearInterval(interval); // cleanup
   }, []);
   // Timer Countdown
   useEffect(() => {
@@ -158,7 +184,11 @@ function Instruction() {
       <Sidebar value={openSidebar} setValue={setOpenSidebar} />
 
       <div className={`transition-all ${openSidebar ? 'xl:ml-72' : ''}`}>
-        <Navbar value={openSidebar} setValue={setOpenSidebar} />
+        <Navbar
+          value={openSidebar}
+          setValue={setOpenSidebar}
+          setUserActivity={setUserActivity}
+        />
         <ToastContainer />
 
         <main className="p-4 md:p-8">
@@ -198,12 +228,12 @@ function Instruction() {
                   </h2>
                   <div className="border-t border-gray-200 mb-3"></div>
 
-                <div
-                className="prose prose-sm max-w-none text-gray-800"
-                dangerouslySetInnerHTML={{
-                  __html: eventInstruction?.instructions || "<p>No instructions available for this event.</p>",
-                }}
-              />
+                  <div
+                    className="prose prose-sm max-w-none text-gray-800"
+                    dangerouslySetInnerHTML={{
+                      __html: eventInstruction?.instructions || "<p>No instructions available for this event.</p>",
+                    }}
+                  />
 
                 </div>
 
@@ -212,8 +242,8 @@ function Instruction() {
                     onClick={handleStartEvent}
                     disabled={startTimeLeft > 0}
                     className={`px-5 py-2 rounded text-sm font-medium transition ${startTimeLeft > 0
-                        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                        : 'bg-blue-600 text-white hover:bg-blue-700'
+                      ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                      : 'bg-blue-600 text-white hover:bg-blue-700'
                       }`}
                   >
                     <FaPlay className="inline mr-2" />
