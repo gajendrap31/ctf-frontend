@@ -132,7 +132,7 @@ const TeamTable = ({
         if (request) {
             return (
                 <button
-                    className="px-3 py-1 text-white bg-gray-800 rounded"
+                    className="px-3 py-1 text-white bg-gray-950 rounded"
                     onClick={() => handleRejectRequest(team.id)}
                 >
                     Delete Request
@@ -144,13 +144,13 @@ const TeamTable = ({
             return (
                 <div className="flex flex-wrap gap-2">
                     <button
-                        className="px-3 py-1 text-white bg-gray-800 rounded"
+                        className="px-3 py-1 text-white bg-gray-950 rounded"
                         onClick={() => handleAcceptInvitation(team.id)}
                     >
                         Accept
                     </button>
                     <button
-                        className="px-3 py-1 text-white bg-gray-800 rounded"
+                        className="px-3 py-1 text-white bg-gray-950 rounded"
                         onClick={() => handleDeleteInvitation(team.id)}
                     >
                         Reject
@@ -163,7 +163,7 @@ const TeamTable = ({
 
         return (
             <button
-                className="px-3 py-1 text-white bg-gray-800 rounded"
+                className="px-3 py-1 text-white bg-gray-950 rounded"
                 onClick={() => handleRequest(team.id)}
             >
                 Request
@@ -272,13 +272,13 @@ const TeamTable = ({
                                             My Team
                                         </button> : <button
                                             onClick={() => handleMembersClick(team.members)}
-                                            className={`${isMember(team) ? 'bg-blue-500' : 'bg-gray-900'} text-white px-3 py-1 rounded`}
+                                            className={`${isMember(team) ? 'bg-blue-500' : 'bg-gray-950'} text-white px-3 py-1 rounded`}
                                         >
                                             View My Team  ({team.members?.length || 0})
                                         </button>}</> :
                                             <button
                                                 onClick={() => handleMembersClick(team.members)}
-                                                className={`${isMember(team) ? 'bg-blue-500' : 'bg-gray-900'} text-white px-3 py-1 rounded`}
+                                                className={`${isMember(team) ? 'bg-blue-500' : 'bg-gray-950'} text-white px-3 py-1 rounded`}
                                             >
                                                 View ({team.members?.length || 0})
                                             </button>}
@@ -373,7 +373,7 @@ const MobileTeamCards = ({
         if (request) {
             return (
                 <button
-                    className="px-3 py-1 text-white bg-gray-800 rounded"
+                    className="px-3 py-1 text-white bg-gray-950 rounded"
                     onClick={() => handleRejectRequest(team.id)}
                 >
                     Delete Request
@@ -385,13 +385,13 @@ const MobileTeamCards = ({
             return (
                 <div className="flex flex-wrap gap-2">
                     <button
-                        className="px-3 py-1 text-white bg-gray-800 rounded"
+                        className="px-3 py-1 text-white bg-gray-950 rounded"
                         onClick={() => handleAcceptInvitation(team.id)}
                     >
                         Accept
                     </button>
                     <button
-                        className="px-3 py-1 text-white bg-gray-800 rounded"
+                        className="px-3 py-1 text-white bg-gray-950 rounded"
                         onClick={() => handleDeleteInvitation(team.id)}
                     >
                         Reject
@@ -403,7 +403,7 @@ const MobileTeamCards = ({
 
         return (
             <button
-                className="px-3 py-1 text-white bg-gray-800 rounded"
+                className="px-3 py-1 text-white bg-gray-950 rounded"
                 onClick={() => handleRequest(team.id)}
             >
                 Request
@@ -526,7 +526,7 @@ const MobileTeamCards = ({
                                 <strong>Captain:</strong> {team.captain?.fullName}
                             </p>
                             <button
-                                className={`mt-3  ${isMember(team) ? 'bg-blue-600' : 'bg-gray-900'} text-white px-3 py-1 rounded`}
+                                className={`mt-3  ${isMember(team) ? 'bg-blue-600' : 'bg-gray-950'} text-white px-3 py-1 rounded`}
                                 onClick={() => handleMembersClick(team.members)}
                             >
                                 {isMember(team) ? 'View My Team Members' : 'View Members'} ({team.members?.length || 0})

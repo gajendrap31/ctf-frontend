@@ -360,23 +360,16 @@ function Teams() {
         if (msg?.includes("has requested to join your team.")) {
             fetchTeamData();
         }
-        if (msg?.includes("You are invited to join the team") || msg?.includes(" has been deleted by the Captain.")) {
+        if (msg?.includes(("You are invited to join the team").toLowerCase()) || msg?.includes((" has been deleted by the Captain.").toLowerCase())) {
             fetchTeamInvitationData();
         }
-        if (msg?.includes("You have been removed from the team")) {
+        if (msg?.includes(("You have been removed from the team").toLowerCase())) {
             if (currentEventData?.id) {
                 fetchTeamData(currentEventData.id)
             }
         }
 
-        if (msg?.includes("Your request to join the team") && msg?.includes("has been rejected by the captain.")) {
-            if (currentEventData?.id) {
-                fetchTeamData(currentEventData.id)
-            }
-            fetchTeamRequestData()
-        }
-
-        if (msg?.includes("Your request to join the team") && msg?.includes("has been accepted by the captain.")) {
+        if (msg?.includes(("Your request to join the team").toLowerCase()) || msg?.includes("has been rejected by the captain.") || msg?.includes("has been accepted by the captain.")) {
             if (currentEventData?.id) {
                 fetchTeamData(currentEventData.id)
             }
@@ -461,7 +454,7 @@ function Teams() {
 
                             {currentEventData?.teamCreationAllowed &&
                                 !myTeamStatus && <button
-                                    className="px-2 py-1 text-white bg-gray-800 rounded"
+                                    className="px-2 py-1 text-white bg-gray-950 rounded"
                                     onClick={() => {
                                         navigate("/Myteams");
                                     }}
@@ -634,7 +627,7 @@ const TeamMembersModal = ({ isOpen, onClose, teamMemberData }) => {
                 <div className="flex justify-end mt-4">
                     <button
                         type="button"
-                        className="px-4 py-2 text-gray-700 bg-gray-300 rounded"
+                        className="px-4 py-2 text-gray-950 bg-gray-300 rounded"
                         onClick={onClose}
                     >
                         Cancel

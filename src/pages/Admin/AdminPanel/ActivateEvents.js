@@ -34,7 +34,7 @@ function ActivateEvents({ userDetails }) {
                 setOpen(false);
             }
         };
-		handleResize();
+        handleResize();
         window.addEventListener('resize', handleResize);
 
         return () => {
@@ -77,6 +77,31 @@ function ActivateEvents({ userDetails }) {
         fetchLiveEvents()
         fetchTodaysEvents()
     }, [])
+
+    useEffect(() => {
+        if (!liveEventsData || liveEventsData.length === 0) return;
+
+        const timers = [];
+
+        liveEventsData.forEach(event => {
+            if (event.endDateTime) {
+                
+                const endTime = new Date(event.endDateTime).getTime();
+                const now = Date.now();
+                const timeLeft = endTime - now;
+                if (timeLeft > 0) {
+                    const timer = setTimeout(() => {
+                        fetchLiveEvents();
+                        fetchTodaysEvents();
+                    }, timeLeft+3000);
+
+                    timers.push(timer);
+                }
+            }
+        });
+
+        return () => timers.forEach(timer => clearTimeout(timer));
+    }, [liveEventsData]);
 
     const formatTimeRange = (start, end) => {
         const options = { month: 'short', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
@@ -269,7 +294,7 @@ function ActivateEvents({ userDetails }) {
             setMinutes("");
             toast.success(response?.data)
         } catch (error) {
-
+            toast.error(error?.response?.data)
         }
     };
     return (

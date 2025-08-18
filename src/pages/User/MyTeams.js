@@ -415,7 +415,7 @@ function MyTeams() {
                                             {isCurrentUserCaptain ? (
                                                 <div className="flex space-x-2">
                                                     <button
-                                                        className="px-2 py-1 text-white bg-gray-800 rounded"
+                                                        className="px-2 py-1 text-white bg-gray-950 rounded"
                                                         onClick={() => {
                                                             handleInviteClick();
                                                             setActiveUserRequestTab(2);
@@ -424,7 +424,7 @@ function MyTeams() {
                                                         User requests<span className="px-1 ml-1 text-sm bg-red-600 rounded-full" title="Total request">{teamRequest.length}</span>
                                                     </button>
                                                     <button
-                                                        className="px-2 py-1 text-white bg-gray-800 rounded"
+                                                        className="px-2 py-1 text-white bg-gray-950 rounded"
                                                         onClick={() => {
                                                             handleInviteClick()
                                                             setActiveUserRequestTab(0)
@@ -434,7 +434,7 @@ function MyTeams() {
                                                     </button>
                                                 </div>
                                             ) : (
-                                                <button className="px-2 py-1 text-white bg-gray-800 rounded"
+                                                <button className="px-2 py-1 text-white bg-gray-950 rounded"
                                                     onClick={() => handleLeaveTeam(teamData.id)}
 
                                                 >
@@ -575,7 +575,7 @@ const TeamMemberCardList = ({
                                 <div className="flex flex-wrap gap-2 pt-2">
                                     {isCaptain ? (
                                         <button
-                                            className="px-3 py-1 text-sm text-white bg-gray-800 rounded"
+                                            className="px-3 py-1 text-sm text-white bg-gray-950 rounded"
                                             onClick={() => handleLeaveTeam(teamData.id)}
                                         >
                                             Leave Team
@@ -740,7 +740,7 @@ const InviteNewTeamMember = ({
                             </div>
 
                             <button
-                                className="px-3 py-1 text-white bg-gray-800 rounded h-fit hover:bg-gray-700"
+                                className="px-3 py-1 text-white bg-gray-950 rounded h-fit hover:bg-gray-700"
                                 onClick={() => handleInviteUser(user.id)}
                             >
                                 Invite

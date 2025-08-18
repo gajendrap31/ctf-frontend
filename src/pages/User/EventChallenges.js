@@ -11,11 +11,11 @@ import { IoCloseOutline } from "react-icons/io5";
 import AuthService from "../Authentication/AuthService";
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { ProfileContext } from "../Context API/ProfileContext";
+import {FaInfoCircle} from "react-icons/fa";
 import { faCircleCheck, faCircleXmark, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Tooltip } from 'react-tooltip'
 import { PulseLoader } from "react-spinners";
-import { FaLongArrowAltLeft } from "react-icons/fa";
 function EventChallenges() {
     Modal.setAppElement("#root");
     const [openSidebar, setOpenSidebar] = useState(true);
@@ -44,6 +44,7 @@ function EventChallenges() {
     const navigate = useNavigate();
 
     const token = useMemo(() => localStorage.getItem("Token"), []);
+    const [eventOver, setEventOver] = useState(false);
 
     useEffect(() => {
         if (!userActivity) return;
@@ -61,10 +62,19 @@ function EventChallenges() {
         if (
             msg?.includes("is now over") && currentEventData?.name && msg.includes(currentEventData.name.toLowerCase())
         ) {
-            //console.log(currentEventData);
-            setEndTimeLeft(5);
+            setEventOver(true);
+            setEndTimeLeft(0);
         }
     }, [userActivity?.notificationTime]);
+
+    useEffect(() => {
+        if (endTimeLeft <= 0 && startTimeLeft <= 0) {
+            const timeout = setTimeout(() => {
+                navigate("/Dashboard");
+            }, 1000);
+            return () => clearTimeout(timeout);
+        }
+    }, [endTimeLeft, startTimeLeft, navigate]);
 
     useEffect(() => {
         const handleResize = () => {
@@ -112,6 +122,18 @@ function EventChallenges() {
         }
     };
 
+    const selectedChallengeRef = useRef(null);
+    const isModalOpenRef = useRef(false);
+
+    // keep refs in sync with state
+    useEffect(() => {
+        selectedChallengeRef.current = selectedChallenge;
+    }, [selectedChallenge]);
+
+    useEffect(() => {
+        isModalOpenRef.current = isModalOpen;
+    }, [isModalOpen]);
+
     useEffect(() => {
         if (!userDetails?.id || !token) return;
 
@@ -136,11 +158,27 @@ function EventChallenges() {
                     try {
                         const data = JSON.parse(event.data);
                         if (data.heartbeat) return;
+
                         if (data.update && data.challengeCategoryId) {
                             const ref = categoryRefs.current[data.challengeCategoryId];
-                            if (ref?.refetchChallenges) await ref.refetchChallenges();
+                            if (ref?.refetchChallenges) {
+                                const updatedChallenges = await ref.refetchChallenges();
+                                const currentSelected = selectedChallengeRef.current;
+                                const modalOpen = isModalOpenRef.current;
+                                
+                                if (modalOpen && currentSelected?.id) {
+                                    
+                                    const targetId = Number(currentSelected.id);
+                                    const updated = updatedChallenges.find((c) => Number(c.id) === targetId);
+                                    if (updated) {
+                                        
+                                        setSelectedChallenge(updated);
+                                    }
+                                }
+                            }
                         }
-                        if (data.message) toast.info(data.message);
+
+                        if (data.message) { toast.info(data.message); }
                     } catch (err) {
                         // console.warn("Invalid SSE message");
                     }
@@ -204,7 +242,7 @@ function EventChallenges() {
             const timeRemaining = Math.max(0, Math.floor((eventStartTime - serverTimestamp) / 1000));
             setStartTimeLeft(timeRemaining);
         }
-        if (currentEventData?.endDateTime) {
+        if (currentEventData?.endDateTime && !eventOver) {
             const serverTimestamp = new Date(serverTime).getTime();
             const eventEndTime = new Date(currentEventData.endDateTime).getTime();
             const timeRemaining = Math.max(0, Math.floor((eventEndTime - serverTimestamp) / 1000));
@@ -262,16 +300,6 @@ function EventChallenges() {
             .toString()
             .padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
     };
-
-    useEffect(() => {
-        if (endTimeLeft <= 0 && startTimeLeft <= 0) {
-            const timeout = setTimeout(() => {
-                navigate("/Dashboard");
-            }, 1000);
-            return () => clearTimeout(timeout);
-        }
-    }, [endTimeLeft, startTimeLeft, navigate]);
-
 
     // Leave Event
     const handleLeaveEvent = async () => {
@@ -463,7 +491,7 @@ function EventChallenges() {
                     </div>
                     <div>
                         <button className="flex items-center text-blue-600 hover:text-blue-800 ms-4" onClick={() => navigate("/Instruction")}>
-                            <FaLongArrowAltLeft className="me-1"/> Read Instructions
+                            <FaInfoCircle className="me-1" /> Read Instructions
                         </button>
                     </div>
                     {challengesCategory.map((category) => (
