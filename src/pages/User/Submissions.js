@@ -306,7 +306,7 @@ function Submissions() {
 
                     <div className="p-4 space-y-4">
                         {currentEventData?.name && (
-                            <div className="px-4 bg-white rounded-md font-Lexend_Regular">
+                            <div className="bg-white rounded-md font-Lexend_Regular">
                                 {/* Top Row: Back Button + Timer */}
                                 <div className="flex flex-col items-center justify-between sm:flex-row ">
                                     <div>

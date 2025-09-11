@@ -170,7 +170,7 @@ function AssignChallenges({ userDetails }) {
                 <div className={`text-gray-900 min-h-[90vh] overflow-auto w-full ${sidebarOpen ? 'pl-0 lg:pl-72' : ''}`}>
 
                     <div className="flex items-center justify-center p-3 py-2 m-4 bg-gray-100 rounded">
-                        <p className="px-8 py-1 text-2xl text-gray-800 rounded font-Lexend_Bold"> Assign Challenges </p>
+                        <p className="px-8 py-1 text-2xl text-gray-800 rounded font-Lexend_Bold">Assign Challenges</p>
                     </div>
                     <div className="p-3 mx-4 border rounded-lg">
 

@@ -419,9 +419,9 @@ const MobileTeamCards = ({
     const activeEvent = currentEventData?.id ? currentEventData : selectedEventData?.id ? selectedEventData : null;
     if (currentEventData?.id && !currentEventData?.teamCreationAllowed) {
         return (
-            <div className="m-4 text-center bg-white rounded-lg sm:hidden">
+            <div className="text-center bg-white rounded-lg sm:hidden">
                 <div className="">
-                    <p className="mb-2 text-3xl text-gray-700 font-Lexend_SemiBold">
+                    <p className="text-3xl text-gray-700 font-Lexend_SemiBold">
                         You've joined a solo event.
                     </p>
                     <p className="text-base text-gray-500 font-Lexend_Regular">

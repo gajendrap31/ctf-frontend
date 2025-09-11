@@ -456,7 +456,7 @@ function AdminEvents({ userDetails }) {
     };
 
     const handleAssignChallenges = (event) => {
-        navigate("/Admin/AssignChallenges", { state: { eventId: event.id } })
+        navigate("/admin/assign-challenges", { state: { eventId: event.id } })
     };
     return (
         <div className="overflow-hidden ">

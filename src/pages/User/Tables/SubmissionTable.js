@@ -121,12 +121,12 @@ const SubmissionTable = ({
             {isLoading ? (
               renderSkeletonRow()
             ) : !(selectedEvent || eventData.id) ?
-              <tr className="text-gray-700 border-b-2 h-9">
+              <tr className="text-gray-700 h-9">
                 <td colSpan="7" className="py-3 text-center text-gray-700">
                   Event has not been selected yet. Please select an event.
                 </td>
               </tr> : !submissionData?.content?.length ?
-                <tr className="text-gray-700 border-b-2 h-9">
+                <tr className="text-gray-700 h-9">
                   <td colSpan={7} className="text-center">Looks like you haven’t submitted any challenges in this event.</td>
                 </tr> :
                 submissionData.content.map((submission, index) => (

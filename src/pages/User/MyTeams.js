@@ -298,7 +298,7 @@ function MyTeams() {
             currentEventData?.name &&
             msg.includes(currentEventData.name.toLowerCase())
         ) {
-             setTimeout(() => {
+            setTimeout(() => {
                 fetchCurrentEventDetails();
             }, 3000);
             fetchServerTime();
@@ -351,7 +351,7 @@ function MyTeams() {
                 <ToastContainer />
                 <div className={`text-gray-900 overflow-auto  space-y-8   w-full ${openSidebar ? 'pl-0 lg:pl-72' : ''} `} >
                     {Object.keys(currentEventData).length > 0 ? (
-                        <div className="p-4">
+                        <div className="space-y-4 p-4">
                             {currentEventData?.name && (
                                 <div className="bg-white rounded-md font-Lexend_Regular">
                                     {/* Top Row: Back Button + Timer */}
@@ -478,9 +478,8 @@ function MyTeams() {
                                             handleInviteUser={handleInviteUser}
                                         />
                                     </div>
-                                ) : <div className="p-2 m-4 text-center bg-white border rounded-lg ">
-
-                                    <div>
+                                ) : <div className="hidden p-6 text-center bg-white rounded-lg sm:block border">
+                                    <div className="py-8">
                                         <p className="mb-2 text-3xl text-gray-700 font-Lexend_SemiBold">
                                             You've joined a solo event.
                                         </p>
