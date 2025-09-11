@@ -179,7 +179,7 @@ function UserDashboard() {
     const handleJoin = async (event) => {
         try {
             const res = await axiosInstance.post(`/user/event/${event.id}/join`);
-            navigate("/Instruction", { state: { event, userData: { userDetails } } });
+            navigate("/instruction", { state: { event, userData: { userDetails } } });
         } catch (error) {
             toast.error(error.response?.data || "");
         }
@@ -327,12 +327,12 @@ function UserDashboard() {
                                                     event.participationAllowed ?
                                                         <button
                                                             className="px-5 text-white bg-blue-500 border border-blue-500 rounded hover:bg-blue-400 hover:border-blue-400"
-                                                            onClick={() => navigate("/EventChallenges")}
+                                                            onClick={() => navigate("/event-challenges")}
                                                         >
                                                             Go to Event
                                                         </button> : <button
                                                             className="px-5 text-white bg-blue-500 border border-blue-500 rounded hover:bg-blue-400 hover:border-blue-400"
-                                                            onClick={() => navigate("/Instruction")}
+                                                            onClick={() => navigate("/instruction")}
                                                         >
                                                             Go to Instruction
                                                         </button>

@@ -205,7 +205,7 @@ function Navbar({ value, setValue, setUserActivity }) {
         {isOpen && (
           <div className="absolute right-0 z-10 mt-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md shadow-lg w-44 sm:w-56">
             <ul>
-              <Link to="/Admin/profile">
+              <Link to="/admin/profile">
                 <li className="p-2 cursor-pointer hover:bg-gray-200">
                   My Profile
                 </li>

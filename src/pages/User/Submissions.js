@@ -65,7 +65,7 @@ function Submissions() {
             setStartTimeLeft(0);
             setEndTimeLeft(0);
             setTimeout(() => {
-                navigate("/Dashboard");
+                navigate("/dashboard");
             }, 3000);
         }
     }, [userActivity]);
@@ -313,14 +313,14 @@ function Submissions() {
                                         {currentEventData.participationAllowed ? (
                                             <button
                                                 className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
-                                                onClick={() => navigate("/EventChallenges")}
+                                                onClick={() => navigate("/event-challenges")}
                                             >
                                                 <FaLongArrowAltLeft /> Back to Challenges
                                             </button>
                                         ) : (
                                             <button
                                                 className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
-                                                onClick={() => navigate("/Instruction")}
+                                                onClick={() => navigate("/instruction")}
                                             >
                                                 <FaLongArrowAltLeft /> Back to Instructions
                                             </button>

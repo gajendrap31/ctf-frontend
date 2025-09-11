@@ -11,12 +11,12 @@ import { TbLayoutDashboardFilled } from "react-icons/tb";
 const Sidebar = ({ value, setValue }) => {
 
     const menus = [
-        { name: "Dashboard", link: "/Dashboard", icon: TbLayoutDashboardFilled, url: 'UserAssets/dashboard.png' },
+        { name: "Dashboard", link: "/dashboard", icon: TbLayoutDashboardFilled, url: 'UserAssets/dashboard.png' },
         // { name: "Challenges", link: "/Challenges", icon: AiFillDashboard, url:'UserAssets/challenges.png'},
-        { name: "Teams", link: "/Teams", icon: FaUsersLine, url: 'UserAssets/team.png' },
-        { name: "My Team", link: "/Myteams", icon: RiTeamFill, url: 'UserAssets/myteam.png' },
-        { name: "Submissions", link: "/Submissions", icon: FaFlagCheckered, url: 'UserAssets/myteam.png' },
-        { name: "Scoreboard", link: "/Scoreboard", icon: MdOutlineScoreboard, url: 'UserAssets/scoreboard.png' },
+        { name: "Teams", link: "/teams", icon: FaUsersLine, url: 'UserAssets/team.png' },
+        { name: "My Team", link: "/my-team", icon: RiTeamFill, url: 'UserAssets/myteam.png' },
+        { name: "Submissions", link: "/submissions", icon: FaFlagCheckered, url: 'UserAssets/myteam.png' },
+        { name: "Scoreboard", link: "/scoreboard", icon: MdOutlineScoreboard, url: 'UserAssets/scoreboard.png' },
         // { name: "Events", link: "/Events", icon: AiFillDashboard },
     ];
 

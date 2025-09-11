@@ -122,7 +122,7 @@ const SignIn = ({ setIsLoggedIn, setUserDetails }) => {
             await fetchProfilePicture();
             setUserDetails(decodedToken);
             setIsLoggedIn(true);
-            navigate('/Dashboard', { replace: true });
+            navigate('/dashboard', { replace: true });
             setUserName('');
             setPassword('');
 
@@ -201,7 +201,7 @@ const SignIn = ({ setIsLoggedIn, setUserDetails }) => {
                         <div className="flex items-center mb-4 text-sm text-gray-600 ">
                             <p className="font-Lexend_Regular ">New user?</p>
                             <Link
-                                to="/sign_up"
+                                to="/sign-up"
                                 className="ml-2 text-blue-700 font-Lexend_Bold hover:underline"
                             >
                                 Sign up now!
@@ -313,10 +313,10 @@ const SignIn = ({ setIsLoggedIn, setUserDetails }) => {
                             </div>
                             {/* Forgot Password */}
                             <div className="flex justify-between mb-3 text-blue-600  font-Lexend_Medium">
-                                <Link to="/Verify Email" className="hover:underline ">
+                                <Link to="/verify-email" className="hover:underline ">
                                     Verify Email?
                                 </Link>
-                                <Link to="/reset_password" className="text-center hover:underline">
+                                <Link to="/reset-password" className="text-center hover:underline">
                                     Forgot Password?
                                 </Link>
                             </div>
@@ -409,6 +409,7 @@ const Modal = ({ isOpen, onClose, setIsLoggedIn, setUserDetails, fetchUserDetail
     const handleSendOTP = async (e) => {
         e.preventDefault();
         setLoading(true)
+		setOTP("");
         try {
             const response = await axios.post(
                 `${url}/login/otp/send`,
@@ -453,7 +454,7 @@ const Modal = ({ isOpen, onClose, setIsLoggedIn, setUserDetails, fetchUserDetail
             setUserDetails(decodedToken);
             setIsLoggedIn(true);
 
-            navigate('/Dashboard', { replace: true });
+            navigate('/dashboard', { replace: true });
         } catch (error) {
             toast.error(error.response?.data || "OTP Verification Failed");
         } finally {
@@ -464,7 +465,7 @@ const Modal = ({ isOpen, onClose, setIsLoggedIn, setUserDetails, fetchUserDetail
     const handleResendOTP = async (e) => {
         e.preventDefault();
         setLoadingResendOTP(true)
-
+		setOTP("");
         try {
             const response = await axios.post(
                 `${url}/login/otp/resend`,

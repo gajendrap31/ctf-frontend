@@ -352,7 +352,7 @@ function AdminChallenges({ userDetails }) {
                                                 </button>
                                                 <p
                                                     className='flex items-center px-2 mt-2 text-sm text-white rounded cursor-pointer bg-slate-700 sm:mt-0'
-                                                    onClick={() => navigate('/Admin/ChallengeCategory')}
+                                                    onClick={() => navigate('/admin/challenge-category')}
                                                 >
                                                     <FaPlusCircle className='mr-1' size={18} /> New Category
                                                 </p>

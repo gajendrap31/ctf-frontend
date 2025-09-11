@@ -122,7 +122,7 @@ const TeamTable = ({
             // return (
             //     <button
             //         className="px-3 py-1 text-white bg-blue-600 rounded"
-            //         onClick={() => navigate("/Myteams")}
+            //         onClick={() => navigate("/my-team")}
             //     >
             //         My Team
             //     </button>
@@ -267,7 +267,7 @@ const TeamTable = ({
                                     <td className="ps-3">
                                         {isMember(team) ? <> {currentEventData?.id ? <button
                                             className="px-3 py-1 text-white bg-blue-600 rounded"
-                                            onClick={() => navigate("/Myteams")}
+                                            onClick={() => navigate("/my-team")}
                                         >
                                             My Team
                                         </button> : <button
@@ -363,7 +363,7 @@ const MobileTeamCards = ({
             return (
                 <button
                     className="px-3 py-1 text-white bg-blue-600 rounded"
-                    onClick={() => navigate("/Myteams")}
+                    onClick={() => navigate("/my-team")}
                 >
                     My Team
                 </button>

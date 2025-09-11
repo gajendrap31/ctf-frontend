@@ -219,7 +219,7 @@ function ChallengeCategory({ userDetails }) {
                                     <p className='text-lg font-Lexend_SemiBold'>Add Category</p>
                                     {/* <p
                                     className='flex items-center p-2 mt-2 text-base text-blue-500 rounded cursor-pointer sm:mt-0'
-                                    onClick={() => navigate('/Admin/Challenges')}
+                                    onClick={() => navigate('/admin/challenges')}
                                 >
                                     <FaLongArrowAltLeft className='mr-1' /> Back
                                 </p> */}

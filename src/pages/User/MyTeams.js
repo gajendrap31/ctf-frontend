@@ -308,7 +308,7 @@ function MyTeams() {
             setStartTimeLeft(0);
             setEndTimeLeft(0);
             setTimeout(() => {
-                navigate("/Dashboard");
+                navigate("/dashboard");
             }, 3000);
         }
     }, [userActivity]);
@@ -360,14 +360,14 @@ function MyTeams() {
                                             {currentEventData?.participationAllowed ? (
                                                 <button
                                                     className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
-                                                    onClick={() => navigate("/EventChallenges")}
+                                                    onClick={() => navigate("/event-challenges")}
                                                 >
                                                     <FaLongArrowAltLeft /> Back to Challenges
                                                 </button>
                                             ) : (
                                                 <button
                                                     className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
-                                                    onClick={() => navigate("/Instruction")}
+                                                    onClick={() => navigate("/instruction")}
                                                 >
                                                     <FaLongArrowAltLeft /> Back to Instructions
                                                 </button>
@@ -500,7 +500,7 @@ function MyTeams() {
                                 <p
                                     className="flex items-center justify-center p-2 text-blue-500 rounded cursor-pointer"
                                     onClick={() => {
-                                        navigate("/Dashboard");
+                                        navigate("/dashboard");
                                     }}
                                 >
                                     <FaLongArrowAltLeft className="mr-2" /> Back to Dashboard

@@ -15,39 +15,39 @@ const Sidebar = ({ open, setValue }) => {
     const [openSubmenu, setOpenSubmenu] = useState(storedSubmenu !== null);
 
     const adminMenus = [
-        { id: 1, name: "Dashboard", link: "/Dashboard", icon: TbLayoutDashboardFilled },
+        { id: 1, name: "Dashboard", link: "/dashboard", icon: TbLayoutDashboardFilled },
         {
             id: 2, name: "Events", icon: MdOutlineEventNote,
             submenu: [
-                { id: 3, name: "Manage Events", link: "/Admin/Events" },
-                { id: 4, name: "Assign Challenges", link: "/Admin/AssignChallenges" },
-                { id: 5, name: "Add Instruction", link: "/Admin/Instruction" },
-                { id: 6, name: "Go Live", link: "/Admin/Activate-Events" }
+                { id: 3, name: "Manage Events", link: "/admin/events" },
+                { id: 4, name: "Assign Challenges", link: "/admin/assign-challenges" },
+                { id: 5, name: "Add Instruction", link: "/admin/instruction" },
+                { id: 6, name: "Go Live", link: "/admin/activate-events" }
             ]
         },
-        { id: 7, name: "Registered Users", link: "/Admin/Registered_Users", icon: FaRegUser },
-        { id: 8, name: "Teams", link: "/Admin/Teams", icon: FaUsersLine },
+        { id: 7, name: "Registered Users", link: "/admin/registered-users", icon: FaRegUser },
+        { id: 8, name: "Teams", link: "/admin/teams", icon: FaUsersLine },
         {
             id: 9, name: "Challenges", icon: IoExtensionPuzzle,
             submenu: [
-                { id: 10, name: "Challenge", link: "/Admin/Challenges" },
-                { id: 11, name: "Challenge Category", link: "/Admin/ChallengeCategory" }
+                { id: 10, name: "Challenge", link: "/admin/challenges" },
+                { id: 11, name: "Challenge Category", link: "/admin/challenge-category" }
             ]
         },
-        { id: 12, name: "Submissions", link: "/Admin/Submissions", icon: FaFlagCheckered },
-        { id: 13, name: "Scoreboard", link: "/Admin/Scoreboard", icon: MdOutlineScoreboard },
-        { id: 14, name: "Review Submissions", link: "/Admin/MarkforReview", icon: MdOutlineRateReview },
+        { id: 12, name: "Submissions", link: "/admin/submissions", icon: FaFlagCheckered },
+        { id: 13, name: "Scoreboard", link: "/admin/scoreboard", icon: MdOutlineScoreboard },
+        { id: 14, name: "Review Submissions", link: "/admin/mark-for-review", icon: MdOutlineRateReview },
           {
             id: 15, name: "Organsations", icon: GoOrganization,
             submenu: [
-                { id: 16, name: "Manage Organisations", link: "/Admin/Organizations", },
-                { id: 17, name: "State & Union Territory", link: "/Admin/State&UT" }
+                { id: 16, name: "Manage Organisations", link: "/admin/organisations", },
+                { id: 17, name: "State & Union Territory", link: "/admin/state-ut" }
             ]
         },
        
-        { id: 18, name: "Manage Users", link: "/Admin/Users", icon: FaUsers },
-        { id: 19, name: "Report", link: "/Admin/Report", icon: TbReport },
-        // { id: 17, name: "Notifications", link: "/Admin/Notifications", icon: MdOutlineNotificationsActive }
+        { id: 18, name: "Manage Users", link: "/admin/users", icon: FaUsers },
+        { id: 19, name: "Report", link: "/admin/report", icon: TbReport },
+        // { id: 17, name: "Notifications", link: "/admin/notifications", icon: MdOutlineNotificationsActive }
        
     ];
 

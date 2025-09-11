@@ -33,7 +33,7 @@ const ForgotPassword = () => {
             setLoading(true)
             
             const res = await axios.post(
-                `${url}/forgot-password/otp`,
+                `${url}/forgot-password/otp/send`,
                 { emailAddress: email, captchaToken, captchaText: captchaInput },
                 {
                     headers: { 'Content-Type': 'application/json' },
@@ -144,7 +144,7 @@ const ForgotPassword = () => {
                         <h1 className="text-gray-700 font-Lexend_Bold text-2xl md:text-3xl mb-4">Forgot Password</h1>
                         <div className="flex mb-4 space-x-2 font-Lexend_Regular text-gray-600">
                             <p className="text-sm ">Remember your password?</p>
-                            <Link to="/Login" className="font-Lexend_Bold text-blue-700 hover:underline">
+                            <Link to="/login" className="font-Lexend_Bold text-blue-700 hover:underline">
                                 Login here
                             </Link>
                         </div>
@@ -288,6 +288,7 @@ const OTPInput = ({ email, setStep, setToken }) => {
     const handleResendOTP = async () => {
         try {
             setLoadingResend(true)
+			setOtp("")
             const res = await axios.post(
                 `${url}/forgot-password/otp/resend`,
                 { emailAddress: email, },
@@ -306,8 +307,8 @@ const OTPInput = ({ email, setStep, setToken }) => {
     }
     return (
         <div className="flex flex-col items-center w-full max-w-sm mx-auto md:max-w-md lg:max-w-lg text-sm">
-            <p className="mb-4 text-center font-Lexend_Regular text-sm ">
-                OTP has been sent to your email <span className="text-green-500">{email}</span>
+            <p className="mb-4 text-center font-Lexend_Regular text-sm text-gray-600">
+                OTP has been sent to your email <span className="text-black font-Lexend_SemiBold">{email}</span>
             </p>
             <label className="font-Lexend_Bold text-sm  self-start">OTP</label>
             <input
@@ -325,7 +326,7 @@ const OTPInput = ({ email, setStep, setToken }) => {
                         className={`w-fit px-4 py-2 bg-gray-800 cursor-pointer hover:bg-gray-700 rounded text-center flex items-center `}
                         disabled={!otp || loadingSubmit}
                     >
-                        {loadingSubmit ? <PulseLoader size={15} color={"#fff"} /> : "Submit OTP"}
+                        {loadingSubmit ? <PulseLoader size={15} color={"#fff"} /> : "Submit"}
                     </button>
                 </div >
                 <div className=" text-center  font-Lexend_Bold   text-white    mt-4">
@@ -395,7 +396,7 @@ const ResetPassword = ({ email, token, navigate }) => {
             );
             toast.success(res.data || "Password reset successful");
             // setTimeout(() => {
-            //     navigate("/Login")
+            //     navigate("/login")
             // }, 2000);
             setForgotPasswordSuccessModalOpen(true)
         } catch (error) {
@@ -514,7 +515,7 @@ const ResetPassword = ({ email, token, navigate }) => {
       <div className="flex justify-center">
         <button
           className="bg-green-600 text-white px-6 py-2 rounded-full hover:bg-green-700 transition duration-300"
-          onClick={() => navigate("/Login")}
+          onClick={() => navigate("/login")}
         >
           Go to Login
         </button>

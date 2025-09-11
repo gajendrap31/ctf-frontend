@@ -70,7 +70,7 @@ function EventChallenges() {
     useEffect(() => {
         if (endTimeLeft <= 0 && startTimeLeft <= 0) {
             const timeout = setTimeout(() => {
-                navigate("/Dashboard");
+                navigate("/dashboard");
             }, 1000);
             return () => clearTimeout(timeout);
         }
@@ -306,7 +306,7 @@ function EventChallenges() {
         try {
             const res = await axiosInstance.post(`${url}/user/event/${currentEventData.id}/leave`, {});
             toast.success(res.data)
-            navigate("/Dashboard");
+            navigate("/dashboard");
         } catch (error) {
             toast.error(error.response?.data)
         }
@@ -490,7 +490,7 @@ function EventChallenges() {
 
                     </div>
                     <div>
-                        <button className="flex items-center text-blue-600 hover:text-blue-800 ms-4" onClick={() => navigate("/Instruction")}>
+                        <button className="flex items-center text-blue-600 hover:text-blue-800 ms-4" onClick={() => navigate("/instruction")}>
                             <FaInfoCircle className="me-1" /> Read Instructions
                         </button>
                     </div>

@@ -388,7 +388,7 @@ function Teams() {
             setStartTimeLeft(0)
             setEndTimeLeft(0)
             setTimeout(() => {
-                navigate("/Dashboard");
+                navigate("/dashboard");
             }, 3000);
         }
 
@@ -417,14 +417,14 @@ function Teams() {
                                         {currentEventData?.participationAllowed ? (
                                             <button
                                                 className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
-                                                onClick={() => navigate("/EventChallenges")}
+                                                onClick={() => navigate("/event-challenges")}
                                             >
                                                 <FaLongArrowAltLeft /> Back to Challenges
                                             </button>
                                         ) : (
                                             <button
                                                 className="flex items-center gap-1 text-blue-600 hover:text-blue-800"
-                                                onClick={() => navigate("/Instruction")}
+                                                onClick={() => navigate("/instruction")}
                                             >
                                                 <FaLongArrowAltLeft /> Back to Instructions
                                             </button>
@@ -456,7 +456,7 @@ function Teams() {
                                 !myTeamStatus && <button
                                     className="px-2 py-1 text-white bg-gray-950 rounded"
                                     onClick={() => {
-                                        navigate("/Myteams");
+                                        navigate("/my-team");
                                     }}
                                 >
                                     Create your own team

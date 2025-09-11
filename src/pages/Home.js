@@ -212,7 +212,7 @@ function CTFCarousel() {
                         Learn More
                       </Link>
                       <Link
-                        to="/sign_up"
+                        to="/sign-up"
                         className="px-5 py-2 text-white border border-white rounded-full hover:bg-white hover:text-gray-900 motion-preset-rebound-up "
                       >
                         Sign Up

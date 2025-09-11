@@ -143,12 +143,12 @@ const EventDetailsModal = ({ selectedEvent, isOpen, onClose, handleJoin, eventTy
                                     event.participationAllowed ?
                                         <button
                                             className="px-5 text-white bg-blue-500 border border-blue-500 rounded hover:bg-blue-400 hover:border-blue-400"
-                                            onClick={() => navigate("/EventChallenges")}
+                                            onClick={() => navigate("/event-challenges")}
                                         >
                                             Go to Event
                                         </button> : <button
                                             className="px-5 text-white bg-blue-500 border border-blue-500 rounded hover:bg-blue-400 hover:border-blue-400"
-                                            onClick={() => navigate("/Instruction")}
+                                            onClick={() => navigate("/instruction")}
                                         >
                                             Go to Instruction
                                         </button>

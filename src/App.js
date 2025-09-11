@@ -93,17 +93,17 @@ function App() {
     <Routes>
       {/* Public Routes */}
       <Route path="/" element={<Home />} />
-      <Route path="/About_Us" element={<AboutUs />} />
-      <Route path="/UPCOMING EVENTS" element={<UpComingEvents />} />
-      <Route path="/RESOURCES" element={<Resources />} />
-      <Route path="/sign_up" element={<SignUp />} />
-      <Route path="/Login" element={<SignIn setIsLoggedIn={setIsLoggedIn} setUserDetails={setUserDetails} />} />
-      <Route path="/reset_password" element={<ForgotPassword />} />
-      <Route path="/Verify Email" element={<VerifyEmail />} />
+      <Route path="/about-us" element={<AboutUs />} />
+      <Route path="/upcoming-events" element={<UpComingEvents />} />
+      <Route path="/resources" element={<Resources />} />
+      <Route path="/sign-up" element={<SignUp />} />
+      <Route path="/login" element={<SignIn setIsLoggedIn={setIsLoggedIn} setUserDetails={setUserDetails} />} />
+      <Route path="/reset-password" element={<ForgotPassword />} />
+      <Route path="/verify-email" element={<VerifyEmail />} />
 
       {/* Common Route */}
       <Route
-        path="/Dashboard"
+        path="/dashboard"
         element={
           <ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_USER', 'ROLE_ADMIN']}>
             <Dashboard userDetails={userDetails} />
@@ -112,34 +112,34 @@ function App() {
       />
 
       {/* User Routes */}
-      <Route path="/Teams" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_USER']}><Teams userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Myteams" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_USER']}><MyTeams userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Scoreboard" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_USER']}><Scoreboard userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Instruction" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_USER']}><Instruction userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/EventChallenges" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_USER']}><EventChallenges userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/CreateTeam" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_USER']}><CreateTeam userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Submissions" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_USER']}><Submissions userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Profile" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_USER']}><UserProfile /></ProtectedRoute>} />
-      <Route path="/Profile_Statistics" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_USER']}><ProfileStats /></ProtectedRoute>} />
+      <Route path="/teams" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_USER']}><Teams userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/my-team" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_USER']}><MyTeams userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/scoreboard" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_USER']}><Scoreboard userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/instruction" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_USER']}><Instruction userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/event-challenges" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_USER']}><EventChallenges userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/create-team" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_USER']}><CreateTeam userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/submissions" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_USER']}><Submissions userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/profile" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_USER']}><UserProfile /></ProtectedRoute>} />
+      <Route path="/profile-statistics" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_USER']}><ProfileStats /></ProtectedRoute>} />
 
       {/* Admin Routes */}
-      <Route path="/Admin/Events" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminEvents userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Admin/AssignChallenges" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AssignChallenges userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Admin/Activate-Events" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><ActivateEvents userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Admin/Instruction" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminInstruction userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Admin/Users" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><Users userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Admin/Registered_Users" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><RegisteredUsers userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Admin/Teams" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminTeams userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Admin/Challenges" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminChallenges userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Admin/ChallengeCategory" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><ChallengeCategory userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Admin/Scoreboard" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminScoreBoard userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Admin/Submissions" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminSubmissions userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Admin/MarkforReview" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminMarkForReview userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Admin/Organizations" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminOrganization userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Admin/State&UT" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminState_UT userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Admin/Notifications" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminNotification userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Admin/Profile" element={<ProtectedRoute isLoggedIn={isLoggedIn}><AdminProfile userDetails={userDetails} /></ProtectedRoute>} />
-      <Route path="/Admin/Report" element={<ProtectedRoute isLoggedIn={isLoggedIn}><Report userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/admin/events" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminEvents userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/admin/assign-challenges" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AssignChallenges userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/admin/activate-events" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><ActivateEvents userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/admin/instruction" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminInstruction userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/admin/users" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><Users userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/admin/registered-users" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><RegisteredUsers userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/admin/teams" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminTeams userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/admin/challenges" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminChallenges userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/admin/challenge-category" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><ChallengeCategory userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/admin/scoreboard" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminScoreBoard userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/admin/submissions" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminSubmissions userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/admin/mark-for-review" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminMarkForReview userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/admin/organisations" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminOrganization userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/admin/state-ut" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminState_UT userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/admin/notifications" element={<ProtectedRoute isLoggedIn={isLoggedIn} allowedRoles={['ROLE_ADMIN']}><AdminNotification userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/admin/profile" element={<ProtectedRoute isLoggedIn={isLoggedIn}><AdminProfile userDetails={userDetails} /></ProtectedRoute>} />
+      <Route path="/admin/report" element={<ProtectedRoute isLoggedIn={isLoggedIn}><Report userDetails={userDetails} /></ProtectedRoute>} />
 
 
       {/* Fallback Route */}
@@ -158,12 +158,12 @@ export const ProtectedRoute = ({ isLoggedIn, allowedRoles = [], children }) => {
   }
 
   if (allowedRoles.length > 0 && !allowedRoles.includes(userRole)) {
-    return <Navigate to="/Dashboard" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   return children;
 };
 
 export const NotFoundRoute = ({ isLoggedIn }) => {
-  return <Navigate to={isLoggedIn ? "/Dashboard" : "/"} replace />;
+  return <Navigate to={isLoggedIn ? "/dashboard" : "/"} replace />;
 };

@@ -73,7 +73,7 @@
 //                 <button
 //                     className="hidden px-4 py-2 text-white bg-blue-600 rounded md:block hover:bg-blue-500"
 //                     onClick={() => {
-//                         navigate("/Login");
+//                         navigate("/login");
 //                     }}
 //                 >
 //                     LOGIN
@@ -117,7 +117,7 @@
 //                             <button
 //                                 className="w-3/4 px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-500"
 //                                 onClick={() => {
-//                                     navigate("/Login");
+//                                     navigate("/login");
 //                                 }}
 //                             >
 //                                 LOGIN
@@ -197,7 +197,7 @@ function Navbar({ activeSection }) {
                 </button>
                 <button
                     className="hidden px-4 py-2 text-white bg-blue-600 rounded lg:block hover:bg-blue-500"
-                    onClick={() => navigate("/Login")}
+                    onClick={() => navigate("/login")}
                 >
                     LOGIN
                 </button>
@@ -213,13 +213,13 @@ function Navbar({ activeSection }) {
                 <div className="flex items-center space-x-3 font-Lexend_SemiBold">
                     <button
                         className="hidden px-4 py-2 text-gray-800 bg-gray-300 rounded shadow-lg lg:block hover:bg-gray-400"
-                        onClick={() => navigate("/sign_up")}
+                        onClick={() => navigate("/sign-up")}
                     >
                         SIGN UP
                     </button>
                     <button
                         className="hidden px-4 py-2 text-white bg-blue-600 rounded lg:block hover:bg-blue-500"
-                        onClick={() => navigate("/Login")}
+                        onClick={() => navigate("/login")}
                     >
                         LOGIN
                     </button>
@@ -265,13 +265,13 @@ function Navbar({ activeSection }) {
                             <div className="flex flex-col items-center py-3 space-y-3">
                                 <button
                                     className="w-3/4 px-4 py-2 text-gray-900 bg-gray-300 rounded shadow-lg hover:bg-gray-400"
-                                    onClick={() => navigate("/sign_up")}
+                                    onClick={() => navigate("/sign-up")}
                                 >
                                     SIGN UP
                                 </button>
                                 <button
                                     className="w-3/4 px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-500"
-                                    onClick={() => navigate("/Login")}
+                                    onClick={() => navigate("/login")}
                                 >
                                     LOGIN
                                 </button>

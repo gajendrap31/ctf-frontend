@@ -252,7 +252,7 @@ const Signup = () => {
                 }
             );
             toast.success("OTP resent successfully!");
-            navigate("/Verify Email", { state: { email } })
+            navigate("/verify-email", { state: { email } })
             setEmail('')
         } catch (err) {
             toast.error(err.response?.data || "Error occurred while sending otp")
@@ -327,7 +327,7 @@ const Signup = () => {
                         </h1>
                         <div className="flex mb-4 space-x-2 text-gray-600 font-Lexend_Regular">
                             <p>Already have an account?</p>
-                            <Link to="/Login" className="inline-block text-blue-700 font-Lexend_Bold">
+                            <Link to="/login" className="inline-block text-blue-700 font-Lexend_Bold">
                                 Login here
                             </Link>
                         </div>

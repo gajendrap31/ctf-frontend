@@ -154,7 +154,7 @@ function VerifyEmail() {
                         <div className="flex items-center mb-4 text-gray-600 text-sm ">
                             <p className="font-Lexend_Regular  ">Already verified?</p>
                             <Link
-                                to="/Login"
+                                to="/login"
                                 className="ml-2 font-Lexend_Bold text-blue-700 hover:underline"
                             >
                                 Login
@@ -263,7 +263,7 @@ function VerifyEmail() {
                         </p>
                         <button
                             className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700 transition duration-300"
-                            onClick={() => navigate('/Login', { replace: true })}
+                            onClick={() => navigate('/login', { replace: true })}
                         >
                             Go to Login
                         </button>

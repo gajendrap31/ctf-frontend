@@ -88,7 +88,7 @@ function CreateTeam({ userDetails }) {
 
     const handleNavigate = () => {
         if (event) {
-            navigate("/EventChallenges", { state: { event } });
+            navigate("/event-challenges", { state: { event } });
         } else {
             toast.error("Event data is missing!");
         }

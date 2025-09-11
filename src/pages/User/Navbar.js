@@ -390,7 +390,7 @@ function Navbar({ value, setValue, setUserActivity }) {
                     My Profile
                   </li>
                 </Link>
-                <Link to="/Profile_Statistics">
+                <Link to="/profile-statistics">
                   <li className="p-2 hover:bg-gray-200 cursor-pointer">
                     My Statistics
                   </li>

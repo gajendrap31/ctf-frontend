@@ -125,7 +125,7 @@ function AdminDashboard({ userDetails }) {
                             <div className="flex flex-col items-center justify-center">
                                 <p className="text-4xl text-center text-gray-800 font-Lexend_SemiBold">{totalRegisteredUsers || 0}</p>
                                 <p className="pb-2 text-gray-500">Registered Users</p>
-                                <button className="px-2 text-white bg-blue-600 rounded cursor-pointer" onClick={() => navigate("/Admin/Users")}>View</button>
+                                <button className="px-2 text-white bg-blue-600 rounded cursor-pointer" onClick={() => navigate("/admin/users")}>View</button>
                             </div>
                             <div className="flex items-end justify-between text-yellow-400">
                                 <div className="flex items-center text-green-500 font-Lexend_SemiBold"></div>
@@ -576,7 +576,7 @@ const EventScoreGraph = () => {
                         className="cursor-pointer"
                         title="Go to Scoreboard"
                         onClick={() =>
-                            navigate("/Admin/AssignChallenges", {
+                            navigate("/admin/assign-challenges", {
                                 state: { eventId: currentEventId },
                             })
                         }
@@ -771,7 +771,7 @@ const ReviewSubmissionsCarousel = ({ users, todayLiveEvents }) => {
                                 </div>
                                 <div className="flex items-center justify-between w-full text-gray-700">
                                     <FaArrowUpRightFromSquare
-                                        size={24} onClick={() => navigate("/Admin/MarkforReview", { state: { event } })}
+                                        size={24} onClick={() => navigate("/admin/mark-for-review", { state: { event } })}
                                         data-tooltip-id="review-submission"
                                         data-tooltip-content="Go to Review Submission"
                                         className="cursor-pointer"

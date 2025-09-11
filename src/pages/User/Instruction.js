@@ -46,7 +46,7 @@ function Instruction() {
       eventData?.name &&
       msg.includes(eventData.name.toLowerCase())
     ) {
-      navigate("/Dashboard");
+      navigate("/dashboard");
     }
   }, [userActivity?.notificationTime]);
 
@@ -157,7 +157,7 @@ function Instruction() {
   const handleStartEvent = async () => {
     try {
       const response = await axiosInstance.get(`/user/event/${eventData.id}/status`);
-      navigate("/EventChallenges", { state: { event: eventData } });
+      navigate("/event-challenges", { state: { event: eventData } });
       toast.success(response.data);
     } catch (error) {
       toast.error(error.response?.data || "Failed to start the event");
@@ -167,7 +167,7 @@ function Instruction() {
   const handleExit = async () => {
     try {
       const response = await axiosInstance.post(`/user/event/${eventData.id}/leave`);
-      navigate("/Dashboard");
+      navigate("/dashboard");
       toast.success(response.data);
     } catch (error) {
       toast.error(error.response?.data || "Failed to leave the event.");
@@ -252,7 +252,7 @@ function Instruction() {
 
                   {eventData.teamCreationAllowed && (
                     <button
-                      onClick={() => navigate("/Teams")}
+                      onClick={() => navigate("/teams")}
                       className="px-5 py-2 rounded text-sm font-medium bg-green-600 text-white hover:bg-green-700 transition"
                     >
                       <FaUsers className="inline mr-2 text-xl" />
@@ -264,7 +264,7 @@ function Instruction() {
             ) : (
               <div className="text-center">
                 <button
-                  onClick={() => navigate("/Dashboard")}
+                  onClick={() => navigate("/dashboard")}
                   className="inline-flex items-center text-blue-600 hover:text-blue-800 mb-4 text-sm"
                 >
                   <FaArrowLeft className="mr-2" />
