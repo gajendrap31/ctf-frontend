@@ -16,10 +16,8 @@ const AboutUs=()=> {
     <div className=''  id="about-section" >
       <div className='px-4 mt-10 space-y-10 sm:px-6 md:px-14 lg:px-24 xl:px-48 2xl:px-72'>
 
-        <div
-          className="relative flex flex-col items-center justify-end min-h-screen overflow-hidden transition-all duration-700 bg-center bg-no-repeat bg-cover lg:flex-row sm:items-end sm:justify-end motion-scale-in-95"
-          style={{ backgroundImage: "url('/cdac.jpg')" }}
-        >
+        <div className="relative flex flex-col items-center justify-end min-h-screen overflow-hidden transition-all duration-700 bg-center bg-no-repeat bg-cover lg:flex-row sm:items-end sm:justify-end motion-scale-in-95 rounded-lg shadow-md" 
+		style={{ backgroundImage: "url('/cdac.jpg')" }} >
           <div className="w-11/12 px-6 py-10 m-0 bg-white rounded-t-lg shadow-lg sm:w-3/5 2xl:w-2/5 sm:me-4 font-Lexend_Regular md:px-10 lg:me-8 motion-preset-slide-left-md">
             <h1 className="mb-2 text-xl text-blue-500 sm:text-2xl font-Lexend_SemiBold">About Us</h1>
             <h3 className="mb-4 text-2xl sm:text-3xl font-Lexend_Bold">CDAC</h3>
