@@ -108,7 +108,7 @@ const HomePage = () => {
             </div>
             <h5 className="mb-2 text-xl text-center font-Lexend_SemiBold">Join Us</h5>
             <p className="text-base text-center text-gray-600">
-              Join the Challenge. Be a Cybersecurity Champion.
+              Take on the Challenge. Become a Cybersecurity Champion.
             </p>
           </div>
 

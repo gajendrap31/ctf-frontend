@@ -4,21 +4,36 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
-import ScrollToTop from './pages/ScrollTop';
-import { Tooltip } from 'react-tooltip'
 import { ProfileProvider } from './pages/Context API/ProfileContext';
+import ErrorBoundary from './ErrorBoundary';
+import GlobalErrorHandler from './GlobalErrorHandler';
+
+// --- Clickjacking Defensive Code ---
+if (window.top !== window.self) {
+  window.top.location = window.self.location;
+}
+
+window.onerror = (message, source, lineno, colno, err) => {
+  console.warn("Suppressed global error:", message);
+  // optionally show a friendly message or do nothing
+  return true; // prevents the red overlay
+};
+
+window.onunhandledrejection = (event) => {
+  console.warn("Suppressed unhandled promise rejection:", event.reason);
+  return true; // prevents the red overlay
+};
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <ProfileProvider>
-  <BrowserRouter>
-  {/* <ScrollToTop /> */}
-    {/* <React.StrictMode> */}
-      <App />
-    {/* </React.StrictMode> */}
-  </BrowserRouter>
-  </ProfileProvider>
+  <ErrorBoundary>
+    <GlobalErrorHandler />
+    <ProfileProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </ProfileProvider>
+  </ErrorBoundary>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();

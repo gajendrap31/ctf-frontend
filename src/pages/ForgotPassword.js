@@ -89,7 +89,7 @@ const ForgotPassword = () => {
     };
 
     return (
-        <section className="flex flex-col lg:flex-row w-full min-h-screen">
+        <section className="flex flex-col md:flex-row w-full min-h-screen">
 
             {/* LEFT SECTION - IMAGE & TEXT */}
             <div
@@ -138,7 +138,7 @@ const ForgotPassword = () => {
                     <MdHome size={28} />
                 </Link>
                 <ToastContainer />
-                <div className="w-full flex items-center justify-center h-full">
+                <div className="w-full flex items-center justify-center h-full px-4">
 
                     <div className="w-full sm:max-w-md lg:max-w-lg">
                         <h1 className="text-gray-700 font-Lexend_Bold text-2xl md:text-3xl mb-4">Forgot Password</h1>
@@ -248,7 +248,8 @@ const EmailInput = ({ email, setEmail, onSendOTP, loading, captchaKey }) => {
                     </div>
                 </div>
             </div>
-            <div className="w-full text-center flex items-center justify-center font-Lexend_Bold   text-white    mt-4">
+            
+            <div className="w-full text-center flex items-center justify-center font-Lexend_Bold text-white mt-4">
                 <button
                     onClick={() => onSendOTP(captchaToken, captchaInput)}
                     className={`w-fit px-4 py-2 bg-gray-800 flex items-center cursor-pointer hover:bg-gray-700 rounded`}
@@ -407,9 +408,9 @@ const ResetPassword = ({ email, token, navigate }) => {
     };
     return (
         <div className="flex flex-col items-center w-full font-Lexend_Regular max-w-sm mx-auto md:max-w-md lg:max-w-lg text-sm">
-            <p className="mb-4 text-center font-Lexend_Regular text-sm">
+            <p className="mb-4 text-center text-gray-500 font-Lexend_Regular text-sm">
                 Enter new password for account associated with email{" "}
-                <span className="text-green-500">{email}</span>
+                <span className="text-black font-Lexend_SemiBold">{email}</span>
             </p>
             <div className="flex flex-col relative w-full">
                 <label className="font-Lexend_Bold text-sm self-start">New Password <span className="text-red-500">*</span></label>
@@ -485,7 +486,7 @@ const ResetPassword = ({ email, token, navigate }) => {
             <div>
                 <button
                     onClick={handleResetPassword}
-                    className="w-full mt-4 font-Lexend_Bold py-1 px-4 bg-gray-800 text-white rounded shadow hover:bg-gray-700 transition duration-200 flex items-center justify-center "
+                    className="w-full mt-4 font-Lexend_Bold py-2 px-4 bg-gray-800 text-white rounded shadow hover:bg-gray-700 transition duration-200 flex items-center justify-center "
                     disabled={!validPassword || !validConfirmPassword || loadingSubmit}
                 >
                     {loadingSubmit ? <PulseLoader size={15} color={"#fff"} /> : "Submit"}

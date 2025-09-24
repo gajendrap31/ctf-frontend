@@ -512,7 +512,7 @@ const Modal = ({ isOpen, onClose, setIsLoggedIn, setUserDetails, fetchUserDetail
                         </p>
                     ) : (
                         <p className="mb-4 text-sm text-center text-gray-500 font-Lexend_Regular">
-                            An OTP has been sent to  {isCorrectEmail(email) ? "your registered email " : "the email account linked to the username"}  <span className="text-gray-800 font-Lexend_SemiBold">{email}</span>.
+                            An OTP has been sent to  {isCorrectEmail(email) ? "your registered email " : "the email account linked to the username"}  <span className="text-gray-800 font-Lexend_SemiBold">{email}</span>
                         </p>
                     )}
 

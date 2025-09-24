@@ -458,7 +458,7 @@ function AdminChallenges({ userDetails }) {
                                                     <input
                                                         className="p-2 text-gray-600 border rounded focus:border-gray-500 focus:ring-1 focus:ring-gray-300 focus:outline-none"
                                                         type="file"
-                                                        accept=".png,.jpg"
+                                                        accept=".pdf,.png,.jpg,.jpeg,.txt"
                                                         onChange={(e) => {
                                                             const file = e.target.files[0];
 
@@ -849,7 +849,7 @@ function AdminChallenges({ userDetails }) {
                                     <label className="block text-sm font-medium text-gray-700">Upload New File</label>
                                     <input
                                         type="file"
-                                        accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.txt,.zip"
+                                        accept=".pdf,.png,.jpg,.jpeg,.txt"
                                         onChange={(e) => setNewFile(e.target.files?.[0] || null)}
                                         className="block w-full text-sm text-gray-700 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-gray-100 file:text-gray-700 hover:file:bg-gray-200"
                                     />
